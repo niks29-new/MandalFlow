@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Members | MandalFlow</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-light">
+
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>👥 Members</h2>
+
+        <a href="/add-member" class="btn btn-primary">
+            + Add Member
+        </a>
+    </div>
+
+    <input
+        type="text"
+        class="form-control mb-4"
+        placeholder="Search Name or Mobile">
+
+    <table class="table table-bordered table-hover">
+
+        <thead class="table-dark">
+            <tr>
+                <th>Name</th>
+                <th>Mobile</th>
+                <th>Status</th>
+                <th>Expected</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+        {% if members %}
+
+            {% for member in members %}
+
+            <tr>
+
+                <td>{{ member.name }}</td>
+
+                <td>{{ member.mobile }}</td>
+
+                <td>
+                    {% if member.status == "Paid" %}
+                        <span class="badge bg-success">Paid</span>
+
+                    {% elif member.status == "Partial" %}
+                        <span class="badge bg-warning text-dark">Partial</span>
+
+                    {% else %}
+                        <span class="badge bg-danger">Pending</span>
+                    {% endif %}
+                </td>
+
+                <td>₹{{ member.expected_amount }}</td>
+
+                <td>
+
+                    <a href="/member/{{ member.id }}"
+                       class="btn btn-primary btn-sm">
+                        View
+                    </a>
+
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        {% else %}
+
+            <tr>
+
+                <td colspan="5" class="text-center">
+
+                    No Members Found
+
+                </td>
+
+            </tr>
+
+        {% endif %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+</body>
+
+</html>
