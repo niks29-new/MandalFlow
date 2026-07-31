@@ -1,11 +1,15 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
+import os
 
-DATABASE_URL = "sqlite:///./mandalflow.db"
+DATABASE_URL = os.getenv(
+    "DATABASE_URL",
+    "sqlite:///./mandalflow.db"   # Local development fallback
+)
 
 engine = create_engine(
     DATABASE_URL,
-    connect_args={"check_same_thread": False}
+    pool_pre_ping=True
 )
 
 SessionLocal = sessionmaker(
@@ -16,7 +20,6 @@ SessionLocal = sessionmaker(
 
 Base = declarative_base()
 
-# Database Dependency
 def get_db():
     db = SessionLocal()
     try:
