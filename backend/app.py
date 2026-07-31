@@ -192,7 +192,23 @@ async def dashboard(
     if auth:
         return auth
 
+    # ---------------- Members ----------------
+
     total_members = db.query(Member).count()
+
+    paid_members = db.query(Member).filter(
+        Member.status == "Paid"
+    ).count()
+
+    partial_members = db.query(Member).filter(
+        Member.status == "Partial"
+    ).count()
+
+    pending_members = db.query(Member).filter(
+        Member.status == "Pending"
+    ).count()
+
+    # ---------------- Money ----------------
 
     total_collection = sum(
         payment.amount or 0
@@ -204,22 +220,63 @@ async def dashboard(
         for expense in db.query(Expense).all()
     )
 
-    pending_members = db.query(Member).filter(
-        Member.status == "Pending"
-    ).count()
+    balance = total_collection - total_expense
 
-    return templates.TemplateResponse(
-    "index.html",
-        {
-            "request": request,
-            "total_members": total_members,
-            "total_collection": total_collection,
-            "total_expense": total_expense,
-            "balance": total_collection - total_expense,
-            "pending_members": pending_members
-        }
+    # ---------------- Expected Collection ----------------
+
+    expected_collection = sum(
+        member.expected_amount or 0
+        for member in db.query(Member).all()
     )
 
+    pending_amount = expected_collection - total_collection
+
+    if pending_amount < 0:
+        pending_amount = 0
+
+    if expected_collection > 0:
+
+        progress_percent = round(
+            (total_collection / expected_collection) * 100
+        )
+
+    else:
+
+        progress_percent = 0
+
+    # ---------------- Render ----------------
+
+    return templates.TemplateResponse(
+
+        "index.html",
+
+        {
+
+            "request": request,
+
+            "total_members": total_members,
+
+            "paid_members": paid_members,
+
+            "partial_members": partial_members,
+
+            "pending_members": pending_members,
+
+            "total_collection": total_collection,
+
+            "total_expense": total_expense,
+
+            "balance": balance,
+
+            "expected_collection": expected_collection,
+
+            "pending_amount": pending_amount,
+
+            "progress_percent": progress_percent
+
+        }
+
+    )
 # =====================================================
 # MEMBERS
 # =====================================================
