@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Collect Payment</title>
+    <title>Collect Payment | MandalFlow</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
@@ -12,71 +13,168 @@
 
 <div class="container mt-5">
 
-<div class="card">
+    <div class="card shadow">
 
-<div class="card-header bg-success text-white">
-<h3>💰 Collect Payment</h3>
-</div>
+        <div class="card-header bg-success text-white">
+            <h3>💰 Collect Payment</h3>
+        </div>
 
-<div class="card-body">
+        <div class="card-body">
 
-<h4>{{ member.name }}</h4>
+            <h4>{{ member.name }}</h4>
 
-<p>Expected Amount: ₹{{ member.expected_amount }}</p>
+            <p class="text-muted">
+                Mobile: {{ member.mobile }}
+            </p>
 
-<form>
+            <p>
+                <strong>Expected Contribution:</strong>
+                ₹{{ member.expected_amount }}
+            </p>
 
-<div class="mb-3">
-<label>Contribution Type</label>
+            <hr>
 
-<select class="form-select">
+            <form action="/save-payment" method="POST">
 
-<option>Chanda</option>
-<option>Laddu</option>
-<option>Sponsor</option>
-<option>Donation</option>
-<option>Other</option>
+                <!-- Hidden Member ID -->
+                <input
+                    type="hidden"
+                    name="member_id"
+                    value="{{ member.id }}">
 
-</select>
+                <!-- Contribution Type -->
+                <div class="mb-3">
 
-</div>
+                    <label class="form-label">
+                        Contribution Type
+                    </label>
 
-<div class="mb-3">
-<label>Amount</label>
-<input type="number" class="form-control">
-</div>
+                    <select
+                        class="form-select"
+                        name="contribution_type">
 
-<div class="mb-3">
-<label>Payment Mode</label>
+                        <option value="Chanda">Chanda</option>
+                        <option value="Laddu">Laddu</option>
+                        <option value="Sponsor">Sponsor</option>
+                        <option value="Donation">Donation</option>
+                        <option value="Other">Other</option>
 
-<select class="form-select">
-<option>Cash</option>
-<option>UPI</option>
-<option>Bank</option>
-</select>
+                    </select>
 
-</div>
+                </div>
 
-<div class="mb-3">
-<label>Remarks</label>
-<textarea class="form-control"></textarea>
-</div>
+                <!-- Amount -->
 
-<button class="btn btn-success">
-Save Payment
-</button>
+                <div class="mb-3">
 
-<a href="/member/{{ member.id }}" class="btn btn-secondary">
-Back
-</a>
+                    <label class="form-label">
+                        Amount
+                    </label>
 
-</form>
+                    <input
+                        type="number"
+                        class="form-control"
+                        name="amount"
+                        value="{{ member.expected_amount }}"
+                        required>
 
-</div>
+                </div>
 
-</div>
+                <!-- Payment Mode -->
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Payment Mode
+                    </label>
+
+                    <select
+                        class="form-select"
+                        name="payment_mode">
+
+                        <option value="Cash">Cash</option>
+                        <option value="UPI">UPI</option>
+                        <option value="Bank">Bank Transfer</option>
+
+                    </select>
+
+                </div>
+
+                <!-- Payment Date -->
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Payment Date
+                    </label>
+
+                    <input
+                        type="date"
+                        class="form-control"
+                        name="payment_date">
+
+                </div>
+
+                <!-- Next Payment Date -->
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Next Payment Date (Optional)
+                    </label>
+
+                    <input
+                        type="date"
+                        class="form-control"
+                        name="next_payment_date">
+
+                </div>
+
+                <!-- Remarks -->
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Remarks
+                    </label>
+
+                    <textarea
+                        class="form-control"
+                        rows="3"
+                        name="remarks"></textarea>
+
+                </div>
+
+                <!-- Buttons -->
+
+                <div class="d-flex gap-2">
+
+                    <button
+                        type="submit"
+                        class="btn btn-success">
+
+                        💰 Save Payment
+
+                    </button>
+
+                    <a
+                        href="/member/{{ member.id }}"
+                        class="btn btn-secondary">
+
+                        ← Back
+
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
 
 </div>
 
 </body>
+
 </html>

@@ -47,4 +47,21 @@ class Payment(Base):
     received_by = Column(String)
 
     remarks = Column(String)
-    
+
+
+class Expense(Base):
+    __tablename__ = "expenses"
+
+    id = Column(Integer, primary_key=True, index=True)
+
+    expense_type = Column(String, nullable=False)
+
+    amount = Column(Integer, nullable=False)
+
+    payment_mode = Column(String)
+
+    paid_by = Column(String)
+
+    expense_date = Column(String)
+
+    remarks = Column(String)

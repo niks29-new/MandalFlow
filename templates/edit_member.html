@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Member | MandalFlow</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-light">
+
+<div class="container mt-4">
+
+    <h2 class="mb-4">✏️ Edit Member</h2>
+
+    <form method="post" action="/update-member">
+
+        <input type="hidden" name="member_id" value="{{ member.id }}">
+
+        <div class="mb-3">
+            <label>Name</label>
+            <input
+                type="text"
+                name="name"
+                class="form-control"
+                value="{{ member.name }}"
+                required>
+        </div>
+
+        <div class="mb-3">
+            <label>Mobile</label>
+            <input
+                type="text"
+                name="mobile"
+                class="form-control"
+                value="{{ member.mobile }}"
+                required>
+        </div>
+
+        <div class="mb-3">
+            <label>House No</label>
+            <input
+                type="text"
+                name="house_no"
+                class="form-control"
+                value="{{ member.house_no }}">
+        </div>
+
+        <div class="mb-3">
+            <label>Area</label>
+            <input
+                type="text"
+                name="area"
+                class="form-control"
+                value="{{ member.area }}">
+        </div>
+
+        <div class="mb-3">
+            <label>Expected Amount</label>
+            <input
+                type="number"
+                name="expected_amount"
+                class="form-control"
+                value="{{ member.expected_amount }}">
+        </div>
+
+        <button class="btn btn-success">
+            Update Member
+        </button>
+
+        <a href="/members" class="btn btn-secondary">
+            Cancel
+        </a>
+
+    </form>
+
+</div>
+
+</body>
+</html>

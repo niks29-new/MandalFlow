@@ -4,46 +4,116 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MandalFlow</title>
+    <title>MandalFlow Dashboard</title>
 
-    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
-<body>
+<body class="bg-light">
 
-<div class="container">
+<div class="container py-4">
 
-    <h1>🙏 MandalFlow</h1>
+    <h1 class="mb-1">🙏 MandalFlow</h1>
+    <p class="text-muted mb-4">Ganesh Chanda Management System</p>
 
-    <p class="subtitle">Ganesh Chanda Management</p>
+    <div class="row g-3">
 
-    <div class="card">
-        <h3>Total Members</h3>
-        <h2>180</h2>
+        <div class="col-md-3">
+            <div class="card text-center shadow">
+                <div class="card-body">
+                    <h6>Total Members</h6>
+                    <h2>{{ total_members }}</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-center shadow border-success">
+                <div class="card-body">
+                    <h6>Total Collection</h6>
+                    <h2>₹{{ total_collection }}</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-center shadow border-danger">
+                <div class="card-body">
+                    <h6>Total Expenses</h6>
+                    <h2>₹{{ total_expenses }}</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-center shadow border-primary">
+                <div class="card-body">
+                    <h6>Available Balance</h6>
+                    <h2>₹{{ available_balance }}</h2>
+                </div>
+            </div>
+        </div>
+
     </div>
 
-    <div class="card">
-        <h3>Total Collection</h3>
-        <h2>₹62,500</h2>
+    <div class="row g-3 mt-2">
+
+        <div class="col-md-4">
+            <div class="card text-center shadow">
+                <div class="card-body">
+                    <h6>✅ Paid Members</h6>
+                    <h3>{{ paid_members }}</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card text-center shadow">
+                <div class="card-body">
+                    <h6>🟡 Partial Members</h6>
+                    <h3>{{ partial_members }}</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card text-center shadow">
+                <div class="card-body">
+                    <h6>🔴 Pending Members</h6>
+                    <h3>{{ pending_members }}</h3>
+                </div>
+            </div>
+        </div>
+
     </div>
 
-    <div class="card">
-        <h3>Total Expenses</h3>
-        <h2>₹18,400</h2>
+    <div class="row mt-5 g-3">
+
+        <div class="col-md-3">
+            <a href="/members" class="btn btn-primary w-100 p-3">
+                👥 Members
+            </a>
+        </div>
+
+        <div class="col-md-3">
+            <a href="/add-member" class="btn btn-success w-100 p-3">
+                ➕ Add Member
+            </a>
+        </div>
+
+        <div class="col-md-3">
+            <a href="/expenses" class="btn btn-warning w-100 p-3">
+                💸 Expenses
+            </a>
+        </div>
+
+        <div class="col-md-3">
+            <a href="/dashboard" class="btn btn-info w-100 p-3">
+                🔄 Refresh
+            </a>
+        </div>
+
     </div>
-
-    <div class="card">
-        <h3>Available Balance</h3>
-        <h2>₹44,100</h2>
-    </div>
-
-    <button>Add Member</button>
-
-    <button>Collect Chanda</button>
-
-    <button>Expenses</button>
-
-    <button>Reports</button>
 
 </div>
 
