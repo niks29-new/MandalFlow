@@ -729,3 +729,10 @@ async def health():
         "application": "MandalFlow",
         "version": "2.0"
     }
+import os
+
+@app.get("/db-test")
+async def db_test():
+    return {
+        "DATABASE_URL": os.getenv("DATABASE_URL", "NOT FOUND")
+    }
