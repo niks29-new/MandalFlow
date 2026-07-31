@@ -89,6 +89,28 @@ async def login_page(request: Request):
     )
 
 # =====================================================
+# CREATE ADMIN (ONE TIME ONLY)
+# =====================================================
+
+@app.get("/create-admin")
+async def create_admin(db: Session = Depends(get_db)):
+
+    admin = db.query(Admin).filter(Admin.username == "admin").first()
+
+    if admin:
+        return {"message": "Admin already exists"}
+
+    new_admin = Admin(
+        username="admin",
+        password=pwd_context.hash("admin123")
+    )
+
+    db.add(new_admin)
+    db.commit()
+
+    return {"message": "Admin created"}
+
+# =====================================================
 # LOGIN
 # =====================================================
 
