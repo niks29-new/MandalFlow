@@ -386,6 +386,49 @@ Dashboard | KN STREET CHA RAJA
     </div>
 
 </div>
+<!-- ================= Analytics ================= -->
+
+<div class="card-box mt-4">
+
+<h3 class="section-title">
+
+📊 Financial Analytics
+
+</h3>
+
+<div class="row">
+
+<div class="col-lg-6 mb-4">
+
+<canvas id="collectionChart"></canvas>
+
+</div>
+
+<div class="col-lg-6 mb-4">
+
+<canvas id="expenseChart"></canvas>
+
+</div>
+
+</div>
+
+<div class="row">
+
+<div class="col-lg-6 mb-4">
+
+<canvas id="memberChart"></canvas>
+
+</div>
+
+<div class="col-lg-6 mb-4">
+
+<canvas id="balanceChart"></canvas>
+
+</div>
+
+</div>
+
+</div>
 <!-- ================= Quick Actions ================= -->
 
 <div class="card-box mt-4">
@@ -807,6 +850,109 @@ new Date().toLocaleTimeString();
 setInterval(updateClock,1000);
 
 updateClock();
+
+// ==========================
+// Collection Chart
+// ==========================
+
+new Chart(
+document.getElementById("collectionChart"),
+{
+type:"pie",
+data:{
+labels:["Cash","UPI"],
+datasets:[{
+data:[
+{{ cash_collection }},
+{{ upi_collection }}
+],
+backgroundColor:[
+"#16a34a",
+"#2563eb"
+]
+}]
+}
+});
+
+// ==========================
+// Expense Chart
+// ==========================
+
+new Chart(
+document.getElementById("expenseChart"),
+{
+type:"pie",
+data:{
+labels:["Cash","UPI"],
+datasets:[{
+data:[
+{{ cash_expense }},
+{{ upi_expense }}
+],
+backgroundColor:[
+"#dc2626",
+"#f59e0b"
+]
+}]
+}
+});
+
+// ==========================
+// Member Status
+// ==========================
+
+new Chart(
+document.getElementById("memberChart"),
+{
+type:"doughnut",
+data:{
+labels:["Paid","Partial","Pending"],
+datasets:[{
+data:[
+{{ paid_members }},
+{{ partial_members }},
+{{ pending_members }}
+],
+backgroundColor:[
+"#16a34a",
+"#f59e0b",
+"#dc2626"
+]
+}]
+}
+});
+
+// ==========================
+// Balance
+// ==========================
+
+new Chart(
+document.getElementById("balanceChart"),
+{
+type:"bar",
+data:{
+labels:["Cash","UPI"],
+datasets:[{
+label:"Balance",
+data:[
+{{ cash_balance }},
+{{ upi_balance }}
+],
+backgroundColor:[
+"#16a34a",
+"#2563eb"
+]
+}]
+},
+options:{
+responsive:true,
+plugins:{
+legend:{
+display:false
+}
+}
+}
+});
 
 /* Bhagavad Gita */
 

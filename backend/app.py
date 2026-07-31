@@ -192,41 +192,76 @@ async def dashboard(
     if auth:
         return auth
 
-    # ---------------- Members ----------------
+    # ================= MEMBERS =================
 
-    total_members = db.query(Member).count()
+    members = db.query(Member).all()
 
-    paid_members = db.query(Member).filter(
-        Member.status == "Paid"
-    ).count()
+    total_members = len(members)
 
-    partial_members = db.query(Member).filter(
-        Member.status == "Partial"
-    ).count()
+    paid_members = len([
+        m for m in members
+        if m.status == "Paid"
+    ])
 
-    pending_members = db.query(Member).filter(
-        Member.status == "Pending"
-    ).count()
+    partial_members = len([
+        m for m in members
+        if m.status == "Partial"
+    ])
 
-    # ---------------- Money ----------------
+    pending_members = len([
+        m for m in members
+        if m.status == "Pending"
+    ])
 
-    total_collection = sum(
-        payment.amount or 0
-        for payment in db.query(Payment).all()
+    # ================= PAYMENTS =================
+
+    payments = db.query(Payment).all()
+
+    cash_collection = sum(
+        p.amount or 0
+        for p in payments
+        if p.payment_mode == "Cash"
     )
 
-    total_expense = sum(
-        expense.amount or 0
-        for expense in db.query(Expense).all()
+    upi_collection = sum(
+        p.amount or 0
+        for p in payments
+        if p.payment_mode == "UPI"
     )
 
-    balance = total_collection - total_expense
+    total_collection = cash_collection + upi_collection
 
-    # ---------------- Expected Collection ----------------
+    # ================= EXPENSES =================
+
+    expenses = db.query(Expense).all()
+
+    cash_expense = sum(
+        e.amount or 0
+        for e in expenses
+        if e.payment_mode == "Cash"
+    )
+
+    upi_expense = sum(
+        e.amount or 0
+        for e in expenses
+        if e.payment_mode == "UPI"
+    )
+
+    total_expense = cash_expense + upi_expense
+
+    # ================= BALANCE =================
+
+    cash_balance = cash_collection - cash_expense
+
+    upi_balance = upi_collection - upi_expense
+
+    balance = cash_balance + upi_balance
+
+    # ================= EXPECTED =================
 
     expected_collection = sum(
-        member.expected_amount or 0
-        for member in db.query(Member).all()
+        m.expected_amount or 0
+        for m in members
     )
 
     pending_amount = expected_collection - total_collection
@@ -244,7 +279,33 @@ async def dashboard(
 
         progress_percent = 0
 
-    # ---------------- Render ----------------
+    # ================= EXPENSE BY PERSON =================
+
+    expense_by_person = {}
+
+    for expense in expenses:
+
+        person = expense.paid_by or "Unknown"
+
+        expense_by_person[person] = (
+            expense_by_person.get(person, 0)
+            + (expense.amount or 0)
+        )
+
+    # ================= EXPENSE BY CATEGORY =================
+
+    expense_by_category = {}
+
+    for expense in expenses:
+
+        category = getattr(expense, "category", None) or expense.expense_type
+
+        expense_by_category[category] = (
+            expense_by_category.get(category, 0)
+            + (expense.amount or 0)
+        )
+
+    # ================= RENDER =================
 
     return templates.TemplateResponse(
 
@@ -262,9 +323,21 @@ async def dashboard(
 
             "pending_members": pending_members,
 
+            "cash_collection": cash_collection,
+
+            "upi_collection": upi_collection,
+
             "total_collection": total_collection,
 
+            "cash_expense": cash_expense,
+
+            "upi_expense": upi_expense,
+
             "total_expense": total_expense,
+
+            "cash_balance": cash_balance,
+
+            "upi_balance": upi_balance,
 
             "balance": balance,
 
@@ -272,7 +345,11 @@ async def dashboard(
 
             "pending_amount": pending_amount,
 
-            "progress_percent": progress_percent
+            "progress_percent": progress_percent,
+
+            "expense_by_person": expense_by_person,
+
+            "expense_by_category": expense_by_category
 
         }
 
@@ -602,7 +679,6 @@ async def payment_page(
         }
     )
 
-
 # =====================================================
 # SAVE PAYMENT
 # =====================================================
@@ -613,11 +689,19 @@ async def save_payment(
     request: Request,
 
     member_id: int = Form(...),
+
     contribution_type: str = Form(...),
+
     amount: int = Form(...),
+
     payment_mode: str = Form(...),
+
     payment_date: str = Form(...),
+
     next_payment_date: str = Form(""),
+
+    transaction_id: str = Form(""),
+
     remarks: str = Form(""),
 
     db: Session = Depends(get_db)
@@ -631,12 +715,21 @@ async def save_payment(
     payment = Payment(
 
         member_id=member_id,
+
         contribution_type=contribution_type,
+
         amount=amount,
+
         payment_mode=payment_mode,
+
         payment_date=payment_date,
+
         next_payment_date=next_payment_date,
+
         received_by=request.session.get("user"),
+
+        transaction_id=transaction_id,
+
         remarks=remarks
 
     )
@@ -649,27 +742,36 @@ async def save_payment(
 
     if member:
 
-        member.paid_amount += amount
+        member.paid_amount = (member.paid_amount or 0) + amount
 
         if member.paid_amount >= member.expected_amount:
+
             member.status = "Paid"
 
         elif member.paid_amount > 0:
+
             member.status = "Partial"
 
         else:
+
             member.status = "Pending"
 
         member.payment_mode = payment_mode
+
         member.payment_date = payment_date
+
         member.collected_by = request.session.get("user")
 
     db.commit()
 
     return RedirectResponse(
+
         url=f"/member/{member_id}",
+
         status_code=302
+
     )
+
 # =====================================================
 # EXPENSES PAGE
 # =====================================================
@@ -702,7 +804,6 @@ async def expenses(
         }
     )
 
-
 # =====================================================
 # SAVE EXPENSE
 # =====================================================
@@ -713,10 +814,19 @@ async def save_expense(
     request: Request,
 
     expense_type: str = Form(...),
+
     amount: int = Form(...),
+
     payment_mode: str = Form(...),
+
     paid_by: str = Form(...),
+
+    category: str = Form(""),
+
     expense_date: str = Form(...),
+
+    transaction_id: str = Form(""),
+
     remarks: str = Form(""),
 
     db: Session = Depends(get_db)
@@ -728,22 +838,36 @@ async def save_expense(
         return auth
 
     expense = Expense(
+
         expense_type=expense_type,
+
         amount=amount,
+
         payment_mode=payment_mode,
+
         paid_by=paid_by,
+
+        category=category,
+
         expense_date=expense_date,
+
+        transaction_id=transaction_id,
+
         remarks=remarks
+
     )
 
     db.add(expense)
+
     db.commit()
 
     return RedirectResponse(
-        "/expenses",
-        status_code=302
-    )
 
+        "/expenses",
+
+        status_code=302
+
+    )
 
 # =====================================================
 # DELETE EXPENSE
