@@ -65,3 +65,15 @@ class Expense(Base):
     expense_date = Column(String)
 
     remarks = Column(String)
+# =====================================================
+# ADMIN USERS
+# =====================================================
+
+class Admin(Base):
+    __tablename__ = "admins"
+
+    id = Column(Integer, primary_key=True, index=True)
+
+    username = Column(String, unique=True, nullable=False)
+
+    password = Column(String, nullable=False)

@@ -8,8 +8,10 @@ from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
 from sqlalchemy import or_
 
+from passlib.context import CryptContext
+
 from backend.database import engine, Base, get_db
-from backend.models import Member, Payment, Expense
+from backend.models import Member, Payment, Expense, Admin
 
 # =====================================================
 # CREATE DATABASE
@@ -18,16 +20,25 @@ from backend.models import Member, Payment, Expense
 Base.metadata.create_all(bind=engine)
 
 # =====================================================
+# PASSWORD HASHING
+# =====================================================
+
+pwd_context = CryptContext(
+    schemes=["bcrypt"],
+    deprecated="auto"
+)
+
+# =====================================================
 # FASTAPI APP
 # =====================================================
 
 app = FastAPI(
     title="MandalFlow",
-    version="1.0"
+    version="2.0"
 )
 
 # =====================================================
-# SESSION MIDDLEWARE
+# SESSION
 # =====================================================
 
 app.add_middleware(
@@ -85,13 +96,16 @@ async def login_page(request: Request):
 async def login(
     request: Request,
     username: str = Form(...),
-    password: str = Form(...)
+    password: str = Form(...),
+    db: Session = Depends(get_db)
 ):
 
-    if username == "admin" and password == "admin123":
+    admin = db.query(Admin).filter(
+        Admin.username == username
+    ).first()
 
-        request.session["user"] = username
-
+    if admin and pwd_context.verify(password, admin.password):
+        request.session["user"] = admin.username
         return RedirectResponse(
             "/dashboard",
             status_code=302
@@ -120,6 +134,51 @@ async def logout(request: Request):
     )
 
 # =====================================================
+# CREATE FIRST ADMIN
+# Run only once:
+# http://127.0.0.1:8000/create-admin
+# =====================================================
+
+@app.get("/create-admin")
+async def create_admin(
+    db: Session = Depends(get_db)
+):
+
+    existing = db.query(Admin).filter(
+        Admin.username == "admin"
+    ).first()
+
+    if existing:
+        return {
+            "message": "Admin already exists"
+        }
+
+    admin = Admin(
+        username="admin",
+        password=pwd_context.hash("admin123")
+    )
+
+    db.add(admin)
+    db.commit()
+
+    return {
+        "message": "Admin Created Successfully"
+    }
+
+# =====================================================
+# LOGIN CHECK
+# =====================================================
+
+def check_login(request: Request):
+
+    if not request.session.get("user"):
+        return RedirectResponse(
+            "/login",
+            status_code=302
+        )
+
+    return None
+# =====================================================
 # DASHBOARD
 # =====================================================
 
@@ -129,51 +188,40 @@ async def dashboard(
     db: Session = Depends(get_db)
 ):
 
-    if not request.session.get("user"):
-        return RedirectResponse("/login", status_code=302)
+    auth = check_login(request)
+    if auth:
+        return auth
 
-    members = db.query(Member).all()
-    payments = db.query(Payment).all()
-    expenses = db.query(Expense).all()
+    total_members = db.query(Member).count()
 
-    total_members = len(members)
-
-    total_collection = sum(p.amount for p in payments)
-    total_expenses = sum(e.amount for e in expenses)
-
-    available_balance = total_collection - total_expenses
-
-    total_expected = sum(m.expected_amount for m in members)
-    pending_amount = total_expected - total_collection
-
-    paid_members = len(
-        [m for m in members if m.status == "Paid"]
+    total_collection = sum(
+        payment.amount or 0
+        for payment in db.query(Payment).all()
     )
 
-    partial_members = len(
-        [m for m in members if m.status == "Partial"]
+    total_expense = sum(
+        expense.amount or 0
+        for expense in db.query(Expense).all()
     )
 
-    pending_members = len(
-        [m for m in members if m.status == "Pending"]
-    )
+    pending_members = db.query(Member).filter(
+        Member.status == "Pending"
+    ).count()
 
     return templates.TemplateResponse(
-        "index.html",
+    "index.html",
         {
             "request": request,
             "total_members": total_members,
             "total_collection": total_collection,
-            "total_expenses": total_expenses,
-            "available_balance": available_balance,
-            "pending_amount": pending_amount,
-            "paid_members": paid_members,
-            "partial_members": partial_members,
-            "pending_members": pending_members,
+            "total_expense": total_expense,
+            "balance": total_collection - total_expense,
+            "pending_members": pending_members
         }
     )
+
 # =====================================================
-# MEMBERS LIST
+# MEMBERS
 # =====================================================
 
 @app.get("/members", response_class=HTMLResponse)
@@ -183,21 +231,26 @@ async def members(
     db: Session = Depends(get_db)
 ):
 
-    if not request.session.get("user"):
-        return RedirectResponse("/login", status_code=302)
-
-    query = db.query(Member)
+    auth = check_login(request)
+    if auth:
+        return auth
 
     if search:
-        query = query.filter(
+
+        members = db.query(Member).filter(
             or_(
                 Member.name.ilike(f"%{search}%"),
                 Member.mobile.ilike(f"%{search}%"),
-                Member.area.ilike(f"%{search}%")
+                Member.area.ilike(f"%{search}%"),
+                Member.house_no.ilike(f"%{search}%")
             )
-        )
+        ).all()
 
-    members = query.order_by(Member.id.desc()).all()
+    else:
+
+        members = db.query(Member).order_by(
+            Member.id.desc()
+        ).all()
 
     return templates.TemplateResponse(
         "members.html",
@@ -208,7 +261,6 @@ async def members(
         }
     )
 
-
 # =====================================================
 # ADD MEMBER PAGE
 # =====================================================
@@ -216,8 +268,9 @@ async def members(
 @app.get("/add-member", response_class=HTMLResponse)
 async def add_member(request: Request):
 
-    if not request.session.get("user"):
-        return RedirectResponse("/login", status_code=302)
+    auth = check_login(request)
+    if auth:
+        return auth
 
     return templates.TemplateResponse(
         "add_member.html",
@@ -225,7 +278,6 @@ async def add_member(request: Request):
             "request": request
         }
     )
-
 
 # =====================================================
 # SAVE MEMBER
@@ -238,38 +290,66 @@ async def save_member(
 
     name: str = Form(...),
     mobile: str = Form(...),
-    house_no: str = Form(...),
-    area: str = Form(...),
-    expected_amount: int = Form(...),
+
+    house_no: str = Form(""),
+    area: str = Form(""),
+    address: str = Form(""),
+
+    expected_amount: int = Form(500),
+
+    paid_amount: int = Form(0),
+
+    payment_mode: str = Form(""),
+    payment_date: str = Form(""),
+
+    collected_by: str = Form(""),
+
+    remarks: str = Form(""),
 
     db: Session = Depends(get_db)
 
 ):
 
-    if not request.session.get("user"):
-        return RedirectResponse("/login", status_code=302)
+    auth = check_login(request)
+    if auth:
+        return auth
+
+    status = "Paid"
+
+    if paid_amount < expected_amount:
+        status = "Pending"
 
     member = Member(
+
         name=name,
         mobile=mobile,
+
         house_no=house_no,
         area=area,
+        address=address,
+
         expected_amount=expected_amount,
-        paid_amount=0,
-        status="Pending"
+        paid_amount=paid_amount,
+
+        status=status,
+
+        payment_mode=payment_mode,
+        payment_date=payment_date,
+
+        collected_by=collected_by,
+
+        remarks=remarks
     )
 
     db.add(member)
     db.commit()
 
     return RedirectResponse(
-        url="/members",
-        status_code=303
+        "/members",
+        status_code=302
     )
-
-
 # =====================================================
-# EDIT MEMBER PAGE
+# EDIT MEMBER
 # =====================================================
 
 @app.get("/edit-member/{member_id}", response_class=HTMLResponse)
@@ -279,14 +359,15 @@ async def edit_member(
     db: Session = Depends(get_db)
 ):
 
-    if not request.session.get("user"):
-        return RedirectResponse("/login", status_code=302)
+    auth = check_login(request)
+    if auth:
+        return auth
 
     member = db.query(Member).filter(
         Member.id == member_id
     ).first()
 
-    if member is None:
+    if not member:
         return HTMLResponse(
             "<h2>Member Not Found</h2>",
             status_code=404
@@ -311,18 +392,23 @@ async def update_member(
     request: Request,
 
     member_id: int = Form(...),
+
     name: str = Form(...),
     mobile: str = Form(...),
-    house_no: str = Form(...),
-    area: str = Form(...),
+
+    house_no: str = Form(""),
+    area: str = Form(""),
+    address: str = Form(""),
+
     expected_amount: int = Form(...),
 
     db: Session = Depends(get_db)
 
 ):
 
-    if not request.session.get("user"):
-        return RedirectResponse("/login", status_code=302)
+    auth = check_login(request)
+    if auth:
+        return auth
 
     member = db.query(Member).filter(
         Member.id == member_id
@@ -334,13 +420,23 @@ async def update_member(
         member.mobile = mobile
         member.house_no = house_no
         member.area = area
+        member.address = address
         member.expected_amount = expected_amount
+
+        if member.paid_amount >= member.expected_amount:
+            member.status = "Paid"
+
+        elif member.paid_amount > 0:
+            member.status = "Partial"
+
+        else:
+            member.status = "Pending"
 
         db.commit()
 
     return RedirectResponse(
-        url="/members",
-        status_code=303
+        "/members",
+        status_code=302
     )
 
 
@@ -355,8 +451,9 @@ async def delete_member(
     db: Session = Depends(get_db)
 ):
 
-    if not request.session.get("user"):
-        return RedirectResponse("/login", status_code=302)
+    auth = check_login(request)
+    if auth:
+        return auth
 
     db.query(Payment).filter(
         Payment.member_id == member_id
@@ -371,9 +468,11 @@ async def delete_member(
         db.commit()
 
     return RedirectResponse(
-        url="/members",
-        status_code=303
+        "/members",
+        status_code=302
     )
+
+
 # =====================================================
 # MEMBER DETAILS
 # =====================================================
@@ -385,25 +484,25 @@ async def member_details(
     db: Session = Depends(get_db)
 ):
 
-    if not request.session.get("user"):
-        return RedirectResponse("/login", status_code=302)
+    auth = check_login(request)
+    if auth:
+        return auth
 
     member = db.query(Member).filter(
         Member.id == member_id
     ).first()
 
-    if member is None:
+    if not member:
         return HTMLResponse(
             "<h2>Member Not Found</h2>",
             status_code=404
         )
 
-    payments = (
-        db.query(Payment)
-        .filter(Payment.member_id == member_id)
-        .order_by(Payment.id.desc())
-        .all()
-    )
+    payments = db.query(Payment).filter(
+        Payment.member_id == member_id
+    ).order_by(
+        Payment.id.desc()
+    ).all()
 
     return templates.TemplateResponse(
         "member.html",
@@ -413,8 +512,6 @@ async def member_details(
             "payments": payments
         }
     )
-
-
 # =====================================================
 # PAYMENT PAGE
 # =====================================================
@@ -426,14 +523,15 @@ async def payment_page(
     db: Session = Depends(get_db)
 ):
 
-    if not request.session.get("user"):
-        return RedirectResponse("/login", status_code=302)
+    auth = check_login(request)
+    if auth:
+        return auth
 
     member = db.query(Member).filter(
         Member.id == member_id
     ).first()
 
-    if member is None:
+    if not member:
         return HTMLResponse(
             "<h2>Member Not Found</h2>",
             status_code=404
@@ -461,7 +559,7 @@ async def save_payment(
     contribution_type: str = Form(...),
     amount: int = Form(...),
     payment_mode: str = Form(...),
-    payment_date: str = Form(""),
+    payment_date: str = Form(...),
     next_payment_date: str = Form(""),
     remarks: str = Form(""),
 
@@ -469,18 +567,21 @@ async def save_payment(
 
 ):
 
-    if not request.session.get("user"):
-        return RedirectResponse("/login", status_code=302)
+    auth = check_login(request)
+    if auth:
+        return auth
 
     payment = Payment(
+
         member_id=member_id,
         contribution_type=contribution_type,
         amount=amount,
         payment_mode=payment_mode,
         payment_date=payment_date,
         next_payment_date=next_payment_date,
-        received_by="Admin",
+        received_by=request.session.get("user"),
         remarks=remarks
+
     )
 
     db.add(payment)
@@ -502,14 +603,18 @@ async def save_payment(
         else:
             member.status = "Pending"
 
+        member.payment_mode = payment_mode
+        member.payment_date = payment_date
+        member.collected_by = request.session.get("user")
+
     db.commit()
 
     return RedirectResponse(
         url=f"/member/{member_id}",
-        status_code=303
+        status_code=302
     )
 # =====================================================
-# EXPENSES LIST
+# EXPENSES PAGE
 # =====================================================
 
 @app.get("/expenses", response_class=HTMLResponse)
@@ -518,12 +623,18 @@ async def expenses(
     db: Session = Depends(get_db)
 ):
 
-    if not request.session.get("user"):
-        return RedirectResponse("/login", status_code=302)
+    auth = check_login(request)
+    if auth:
+        return auth
 
-    expenses = db.query(Expense).order_by(Expense.id.desc()).all()
+    expenses = db.query(Expense).order_by(
+        Expense.id.desc()
+    ).all()
 
-    total_expenses = sum(exp.amount for exp in expenses)
+    total_expenses = sum(
+        expense.amount
+        for expense in expenses
+    )
 
     return templates.TemplateResponse(
         "expenses.html",
@@ -555,8 +666,9 @@ async def save_expense(
 
 ):
 
-    if not request.session.get("user"):
-        return RedirectResponse("/login", status_code=302)
+    auth = check_login(request)
+    if auth:
+        return auth
 
     expense = Expense(
         expense_type=expense_type,
@@ -571,8 +683,8 @@ async def save_expense(
     db.commit()
 
     return RedirectResponse(
-        url="/expenses",
-        status_code=303
+        "/expenses",
+        status_code=302
     )
 
 
@@ -587,8 +699,9 @@ async def delete_expense(
     db: Session = Depends(get_db)
 ):
 
-    if not request.session.get("user"):
-        return RedirectResponse("/login", status_code=302)
+    auth = check_login(request)
+    if auth:
+        return auth
 
     expense = db.query(Expense).filter(
         Expense.id == expense_id
@@ -599,8 +712,8 @@ async def delete_expense(
         db.commit()
 
     return RedirectResponse(
-        url="/expenses",
-        status_code=303
+        "/expenses",
+        status_code=302
     )
 
 
@@ -613,5 +726,6 @@ async def health():
 
     return {
         "status": "running",
-        "application": "MandalFlow"
+        "application": "MandalFlow",
+        "version": "2.0"
     }

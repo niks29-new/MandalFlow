@@ -2,26 +2,47 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <title>Members | MandalFlow</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
 </head>
 
 <body class="bg-light">
 
-<div class="container mt-4">
+{% include "navbar.html" %}
+
+<div class="container py-4">
 
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2>👥 Members</h2>
 
-        <a href="/add-member" class="btn btn-primary">
-            + Add Member
+        <div>
+
+            <h2 class="fw-bold">👥 Members</h2>
+
+            <small class="text-muted">
+
+                Total Members : {{ members|length }}
+
+            </small>
+
+        </div>
+
+        <a href="/add-member" class="btn btn-success">
+
+            ➕ Add Member
+
         </a>
+
     </div>
 
     <!-- Search -->
+
     <form method="get" action="/members" class="mb-4">
 
         <div class="input-group">
@@ -30,47 +51,46 @@
                 type="text"
                 name="search"
                 class="form-control"
-                placeholder="Search by Name / Mobile / Area"
+                placeholder="Search Name / Mobile / Area"
                 value="{{ search }}">
 
             <button class="btn btn-primary">
-                Search
-            </button>
 
-            <a href="/members" class="btn btn-secondary">
-                Clear
-            </a>
+                Search
+
+            </button>
 
         </div>
 
     </form>
 
-    <table class="table table-bordered table-hover">
+    <!-- Desktop Table -->
 
-        <thead class="table-dark">
+    <div class="table-responsive d-none d-md-block">
+
+        <table class="table table-hover table-bordered bg-white">
+
+            <thead class="table-dark">
 
             <tr>
-                <th>ID</th>
+
                 <th>Name</th>
                 <th>Mobile</th>
                 <th>Area</th>
-                <th>Status</th>
                 <th>Expected</th>
                 <th>Paid</th>
-                <th>Action</th>
+                <th>Status</th>
+                <th width="260">Actions</th>
+
             </tr>
 
-        </thead>
+            </thead>
 
-        <tbody>
-
-        {% if members %}
+            <tbody>
 
             {% for member in members %}
 
             <tr>
-
-                <td>{{ member.id }}</td>
 
                 <td>{{ member.name }}</td>
 
@@ -78,44 +98,61 @@
 
                 <td>{{ member.area }}</td>
 
-                <td>
-
-                    {% if member.status == "Paid" %}
-
-                        <span class="badge bg-success">Paid</span>
-
-                    {% elif member.status == "Partial" %}
-
-                        <span class="badge bg-warning text-dark">Partial</span>
-
-                    {% else %}
-
-                        <span class="badge bg-danger">Pending</span>
-
-                    {% endif %}
-
-                </td>
-
                 <td>₹{{ member.expected_amount }}</td>
 
                 <td>₹{{ member.paid_amount }}</td>
 
                 <td>
 
-                    <a href="/member/{{ member.id }}"
-                       class="btn btn-primary btn-sm">
+                    {% if member.status=="Paid" %}
+
+                    <span class="badge bg-success">
+                        Paid
+                    </span>
+
+                    {% elif member.status=="Partial" %}
+
+                    <span class="badge bg-warning text-dark">
+                        Partial
+                    </span>
+
+                    {% else %}
+
+                    <span class="badge bg-danger">
+                        Pending
+                    </span>
+
+                    {% endif %}
+
+                </td>
+
+                <td>
+
+                    <a href="/member/{{member.id}}" class="btn btn-primary btn-sm">
+
                         View
+
                     </a>
 
-                    <a href="/edit-member/{{ member.id }}"
-                       class="btn btn-warning btn-sm">
+                    <a href="/payment/{{member.id}}" class="btn btn-success btn-sm">
+
+                        Pay
+
+                    </a>
+
+                    <a href="/edit-member/{{member.id}}" class="btn btn-warning btn-sm">
+
                         Edit
+
                     </a>
 
-                    <a href="/delete-member/{{ member.id }}"
-                       class="btn btn-danger btn-sm"
-                       onclick="return confirm('Are you sure you want to delete this member?')">
+                    <a
+                        href="/delete-member/{{member.id}}"
+                        class="btn btn-danger btn-sm"
+                        onclick="return confirm('Delete this member?')">
+
                         Delete
+
                     </a>
 
                 </td>
@@ -124,23 +161,118 @@
 
             {% endfor %}
 
-        {% else %}
+            </tbody>
 
-            <tr>
+        </table>
 
-                <td colspan="8" class="text-center">
+    </div>
 
-                    No Members Found
+    <!-- Mobile Cards -->
 
-                </td>
+    <div class="d-md-none">
 
-            </tr>
+        {% for member in members %}
 
-        {% endif %}
+        <div class="card shadow-sm mb-3">
 
-        </tbody>
+            <div class="card-body">
 
-    </table>
+                <h5>
+
+                    {{ member.name }}
+
+                </h5>
+
+                <p class="mb-1">
+
+                    📞 {{ member.mobile }}
+
+                </p>
+
+                <p class="mb-1">
+
+                    📍 {{ member.area }}
+
+                </p>
+
+                <p class="mb-1">
+
+                    Expected : ₹{{ member.expected_amount }}
+
+                </p>
+
+                <p class="mb-2">
+
+                    Paid : ₹{{ member.paid_amount }}
+
+                </p>
+
+                {% if member.status=="Paid" %}
+
+                <span class="badge bg-success">
+
+                    Paid
+
+                </span>
+
+                {% elif member.status=="Partial" %}
+
+                <span class="badge bg-warning text-dark">
+
+                    Partial
+
+                </span>
+
+                {% else %}
+
+                <span class="badge bg-danger">
+
+                    Pending
+
+                </span>
+
+                {% endif %}
+
+                <hr>
+
+                <div class="d-grid gap-2">
+
+                    <a href="/member/{{member.id}}" class="btn btn-primary">
+
+                        View
+
+                    </a>
+
+                    <a href="/payment/{{member.id}}" class="btn btn-success">
+
+                        Add Payment
+
+                    </a>
+
+                    <a href="/edit-member/{{member.id}}" class="btn btn-warning">
+
+                        Edit
+
+                    </a>
+
+                    <a
+                        href="/delete-member/{{member.id}}"
+                        class="btn btn-danger"
+                        onclick="return confirm('Delete this member?')">
+
+                        Delete
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
 
 </div>
 

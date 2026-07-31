@@ -2,115 +2,247 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <title>MandalFlow Dashboard</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
 </head>
 
 <body class="bg-light">
 
+{% include "navbar.html" %}
+
 <div class="container py-4">
 
-    <h1 class="mb-1">🙏 MandalFlow</h1>
-    <p class="text-muted mb-4">Ganesh Chanda Management System</p>
+    <div class="text-center mb-4">
+
+        <h2 class="fw-bold">🙏 MandalFlow Dashboard</h2>
+
+        <p class="text-muted">
+            Ganesh Chanda Management System
+        </p>
+
+    </div>
+
+    <!-- First Row -->
 
     <div class="row g-3">
 
-        <div class="col-md-3">
-            <div class="card text-center shadow">
-                <div class="card-body">
+        <div class="col-6 col-lg-3">
+
+            <div class="card shadow border-0">
+
+                <div class="card-body text-center">
+
                     <h6>Total Members</h6>
-                    <h2>{{ total_members }}</h2>
+
+                    <h2 class="text-primary">
+                        {{ total_members }}
+                    </h2>
+
                 </div>
+
             </div>
+
         </div>
 
-        <div class="col-md-3">
-            <div class="card text-center shadow border-success">
-                <div class="card-body">
-                    <h6>Total Collection</h6>
-                    <h2>₹{{ total_collection }}</h2>
+        <div class="col-6 col-lg-3">
+
+            <div class="card shadow border-0">
+
+                <div class="card-body text-center">
+
+                    <h6>Collection</h6>
+
+                    <h2 class="text-success">
+
+                        ₹{{ total_collection }}
+
+                    </h2>
+
                 </div>
+
             </div>
+
         </div>
 
-        <div class="col-md-3">
-            <div class="card text-center shadow border-danger">
-                <div class="card-body">
-                    <h6>Total Expenses</h6>
-                    <h2>₹{{ total_expenses }}</h2>
+        <div class="col-6 col-lg-3">
+
+            <div class="card shadow border-0">
+
+                <div class="card-body text-center">
+
+                    <h6>Expenses</h6>
+
+                    <h2 class="text-danger">
+
+                        ₹{{ total_expenses }}
+
+                    </h2>
+
                 </div>
+
             </div>
+
         </div>
 
-        <div class="col-md-3">
-            <div class="card text-center shadow border-primary">
-                <div class="card-body">
-                    <h6>Available Balance</h6>
-                    <h2>₹{{ available_balance }}</h2>
+        <div class="col-6 col-lg-3">
+
+            <div class="card shadow border-0">
+
+                <div class="card-body text-center">
+
+                    <h6>Balance</h6>
+
+                    <h2 class="text-warning">
+
+                        ₹{{ available_balance }}
+
+                    </h2>
+
                 </div>
+
             </div>
+
         </div>
 
     </div>
+
+    <!-- Second Row -->
 
     <div class="row g-3 mt-2">
 
-        <div class="col-md-4">
-            <div class="card text-center shadow">
-                <div class="card-body">
-                    <h6>✅ Paid Members</h6>
-                    <h3>{{ paid_members }}</h3>
+        <div class="col-4">
+
+            <div class="card shadow border-0">
+
+                <div class="card-body text-center">
+
+                    <h6>Paid</h6>
+
+                    <h3 class="text-success">
+
+                        {{ paid_members }}
+
+                    </h3>
+
                 </div>
+
             </div>
+
         </div>
 
-        <div class="col-md-4">
-            <div class="card text-center shadow">
-                <div class="card-body">
-                    <h6>🟡 Partial Members</h6>
-                    <h3>{{ partial_members }}</h3>
+        <div class="col-4">
+
+            <div class="card shadow border-0">
+
+                <div class="card-body text-center">
+
+                    <h6>Partial</h6>
+
+                    <h3 class="text-warning">
+
+                        {{ partial_members }}
+
+                    </h3>
+
                 </div>
+
             </div>
+
         </div>
 
-        <div class="col-md-4">
-            <div class="card text-center shadow">
-                <div class="card-body">
-                    <h6>🔴 Pending Members</h6>
-                    <h3>{{ pending_members }}</h3>
+        <div class="col-4">
+
+            <div class="card shadow border-0">
+
+                <div class="card-body text-center">
+
+                    <h6>Pending</h6>
+
+                    <h3 class="text-danger">
+
+                        {{ pending_members }}
+
+                    </h3>
+
                 </div>
+
             </div>
+
         </div>
 
     </div>
 
-    <div class="row mt-5 g-3">
+    <!-- Quick Actions -->
 
-        <div class="col-md-3">
-            <a href="/members" class="btn btn-primary w-100 p-3">
-                👥 Members
-            </a>
-        </div>
+    <div class="card shadow border-0 mt-4">
 
-        <div class="col-md-3">
-            <a href="/add-member" class="btn btn-success w-100 p-3">
-                ➕ Add Member
-            </a>
-        </div>
+        <div class="card-body">
 
-        <div class="col-md-3">
-            <a href="/expenses" class="btn btn-warning w-100 p-3">
-                💸 Expenses
-            </a>
-        </div>
+            <h4 class="mb-3">
 
-        <div class="col-md-3">
-            <a href="/dashboard" class="btn btn-info w-100 p-3">
-                🔄 Refresh
-            </a>
+                Quick Actions
+
+            </h4>
+
+            <div class="row g-3">
+
+                <div class="col-6 col-md-3">
+
+                    <a href="/members" class="btn btn-primary w-100 p-3">
+
+                        👥<br>
+
+                        Members
+
+                    </a>
+
+                </div>
+
+                <div class="col-6 col-md-3">
+
+                    <a href="/add-member" class="btn btn-success w-100 p-3">
+
+                        ➕<br>
+
+                        Add Member
+
+                    </a>
+
+                </div>
+
+                <div class="col-6 col-md-3">
+
+                    <a href="/expenses" class="btn btn-warning w-100 p-3">
+
+                        💸<br>
+
+                        Expenses
+
+                    </a>
+
+                </div>
+
+                <div class="col-6 col-md-3">
+
+                    <a href="/change-password" class="btn btn-dark w-100 p-3">
+
+                        🔐<br>
+
+                        Password
+
+                    </a>
+
+                </div>
+
+            </div>
+
         </div>
 
     </div>
