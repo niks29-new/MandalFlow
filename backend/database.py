@@ -7,7 +7,11 @@ DATABASE_URL = os.getenv(
     "sqlite:///./mandalflow.db"
 )
 
+# ===== ADD THESE 3 LINES =====
+print("=" * 60)
 print("DATABASE_URL =", DATABASE_URL)
+print("=" * 60)
+# =============================
 
 engine = create_engine(
     DATABASE_URL,
