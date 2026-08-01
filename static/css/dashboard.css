@@ -1,0 +1,893 @@
+*{
+box-sizing:border-box;
+}
+
+
+body{
+
+margin:0;
+
+background:#160005;
+
+font-family:'Segoe UI',sans-serif;
+
+color:white;
+
+}
+
+
+/* SIDEBAR */
+
+
+.sidebar{
+
+position:fixed;
+
+left:0;
+
+top:0;
+
+width:270px;
+
+height:100vh;
+
+background:
+linear-gradient(
+180deg,
+#250006,
+#500010
+);
+
+
+border-right:
+
+1px solid #d4af37;
+
+
+padding:25px;
+
+z-index:999;
+
+
+}
+
+
+
+.logo-box{
+
+display:flex;
+
+gap:15px;
+
+align-items:center;
+
+margin-bottom:35px;
+
+}
+
+
+
+.logo-box img{
+
+width:55px;
+
+height:55px;
+
+object-fit:contain;
+
+}
+
+
+
+.logo-box h3{
+
+color:#ffd700;
+
+font-family:serif;
+
+font-size:22px;
+
+margin:0;
+
+}
+
+
+
+.logo-box p{
+
+font-size:12px;
+
+color:#ddd;
+
+}
+
+
+
+
+
+.sidebar a{
+
+display:flex;
+
+gap:15px;
+
+align-items:center;
+
+padding:14px;
+
+margin:8px 0;
+
+border-radius:12px;
+
+color:white;
+
+text-decoration:none;
+
+font-size:16px;
+
+}
+
+
+
+.sidebar a:hover,
+.sidebar .active{
+
+
+background:
+
+linear-gradient(
+90deg,
+#8b0000,
+#d4af37
+);
+
+
+}
+
+
+
+.page-wrapper{
+
+
+margin-left:270px;
+
+padding:30px;
+
+
+}
+
+
+
+
+/* HERO */
+
+
+.hero-banner{
+
+
+background:
+
+linear-gradient(
+rgba(40,0,5,.75),
+rgba(100,0,20,.75)
+),
+
+url('/static/images/background.jpg');
+
+
+background-size:cover;
+
+background-position:center;
+
+
+border:
+
+1px solid #d4af37;
+
+
+border-radius:25px;
+
+
+padding:45px;
+
+
+color:white;
+
+
+}
+
+
+
+
+
+.hero-title{
+
+    font-size:52px;
+
+    font-weight:800;
+
+    line-height:1.1;
+
+    color:#ffd700;
+
+    margin-bottom:15px;
+
+    text-shadow:none;
+
+}
+
+
+
+
+/* CARDS */
+
+
+.premium-card,
+.today-card,
+.chart-card,
+.premium-table{
+
+
+background:
+
+linear-gradient(
+145deg,
+#2a080e,
+#400010
+);
+
+
+border:
+
+1px solid rgba(212,175,55,.5);
+
+
+border-radius:22px;
+
+
+padding:25px;
+
+
+box-shadow:
+
+0 20px 40px rgba(0,0,0,.4);
+
+
+}
+
+
+
+.premium-card h2{
+
+
+color:#ffd700;
+
+font-size:35px;
+
+
+}
+
+
+
+
+canvas{
+
+max-height:300px;
+
+}
+
+
+
+@media(max-width:900px){
+
+
+.sidebar{
+
+position:relative;
+
+width:100%;
+
+height:auto;
+
+}
+
+
+.page-wrapper{
+
+margin-left:0;
+
+}
+
+
+}
+/* =========================
+   GANESHA HERO IMAGE
+========================= */
+
+.hero-banner{
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    min-height:360px;
+
+    position:relative;
+
+    overflow:hidden;
+
+}
+
+.hero-image-box{
+
+    width:45%;
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    align-items:center;
+
+}
+
+
+.hero-image{
+
+    width:430px;
+
+    height:380px;
+
+    object-fit:contain;
+
+}
+.hero-content{
+    width:55%;
+}
+
+
+.hero-title{
+    font-size:52px;
+    line-height:1.1;
+    white-space:nowrap;
+}
+
+
+.hero-image-box{
+    width:40%;
+    display:flex;
+    justify-content:center;
+}
+
+
+.hero-image{
+    width:380px;
+    height:330px;
+    object-fit:contain;
+}
+/* ================= SUMMARY CARDS ================= */
+
+
+.premium-card{
+
+background:#35000d;
+
+border:1px solid #b8860b;
+
+border-radius:25px;
+
+padding:30px;
+
+text-align:center;
+
+color:white;
+
+box-shadow:0 15px 35px rgba(0,0,0,.4);
+
+transition:.3s;
+
+}
+
+
+.premium-card:hover{
+
+transform:translateY(-8px);
+
+box-shadow:0 20px 45px rgba(255,215,0,.2);
+
+}
+
+
+
+.premium-card i{
+
+font-size:40px;
+
+}
+
+
+
+.premium-card h6{
+
+color:#d4af37;
+
+letter-spacing:1px;
+
+margin-top:15px;
+
+}
+
+
+
+.premium-card h2{
+
+font-size:35px;
+
+color:#ffd700;
+
+font-weight:700;
+
+}
+
+
+
+.premium-card p{
+
+color:#ddd;
+
+}
+
+
+
+.collection{
+
+border-top:5px solid #22c55e;
+
+}
+
+
+.expense{
+
+border-top:5px solid #ef4444;
+
+}
+
+
+.balance{
+
+border-top:5px solid #3b82f6;
+
+}
+
+
+.members{
+
+border-top:5px solid #f59e0b;
+
+}
+.action-card{
+
+height:160px;
+
+background:#35000d;
+
+border:1px solid #b8860b;
+
+border-radius:25px;
+
+display:flex;
+
+flex-direction:column;
+
+justify-content:center;
+
+align-items:center;
+
+text-decoration:none;
+
+color:white;
+
+transition:.3s;
+
+}
+
+
+.action-card div{
+
+font-size:45px;
+
+}
+
+
+.action-card h5{
+
+margin-top:15px;
+
+color:#ffd700;
+
+}
+
+
+
+.action-card:hover{
+
+transform:translateY(-10px);
+
+background:#5a0015;
+
+color:white;
+
+}
+/* QUICK ACTIONS */
+
+
+.section-title{
+
+color:#ffd700;
+
+font-weight:700;
+
+margin-bottom:20px;
+
+}
+
+
+
+.action-card{
+
+height:170px;
+
+background:#35000d;
+
+border:1px solid #b8860b;
+
+border-radius:25px;
+
+display:flex;
+
+flex-direction:column;
+
+align-items:center;
+
+justify-content:center;
+
+text-decoration:none;
+
+color:white;
+
+transition:.3s;
+
+box-shadow:0 10px 30px rgba(0,0,0,.3);
+
+}
+
+
+
+.action-icon{
+
+font-size:45px;
+
+margin-bottom:15px;
+
+}
+
+
+
+.action-card h5{
+
+color:#ffd700;
+
+}
+
+
+
+.action-card:hover{
+
+transform:translateY(-8px);
+
+background:#5a0015;
+
+}
+/* TODAY CARDS */
+
+
+.today-card{
+
+background:#35000d;
+
+border:1px solid #b8860b;
+
+border-radius:25px;
+
+padding:30px;
+
+text-align:center;
+
+color:white;
+
+box-shadow:0 10px 30px rgba(0,0,0,.4);
+
+}
+
+
+
+.today-card h6{
+
+color:#ffd700;
+
+font-weight:700;
+
+}
+
+
+
+.today-card h3{
+
+font-size:32px;
+
+color:white;
+
+margin:15px 0;
+
+}
+
+
+
+.today-card p{
+
+color:#ddd;
+
+}
+
+
+
+
+.chart-card{
+
+background:#35000d;
+
+border:1px solid #b8860b;
+
+border-radius:25px;
+
+padding:30px;
+
+color:white;
+
+}
+
+
+
+.chart-card h3{
+
+color:#ffd700;
+
+}
+
+
+#shloka{
+
+font-size:20px;
+
+line-height:2;
+
+color:white;
+
+}
+/* ================= CHARTS ================= */
+
+
+.chart-card canvas{
+
+max-height:300px;
+
+margin-top:20px;
+
+}
+
+
+
+.chart-card h3{
+
+text-align:center;
+
+margin-bottom:20px;
+
+}
+/* ================= BOTTOM CARDS ================= */
+
+
+
+.premium-table{
+
+background:#35000d;
+
+border:1px solid #b8860b;
+
+border-radius:25px;
+
+padding:25px;
+
+color:white;
+
+box-shadow:0 10px 30px rgba(0,0,0,.4);
+
+}
+
+
+
+.premium-table h3{
+
+color:#ffd700;
+
+}
+
+
+
+.table{
+
+color:white;
+
+}
+
+
+
+.table th{
+
+color:#ffd700;
+
+}
+
+
+
+.table td{
+
+color:white;
+
+}
+
+
+
+
+
+.quote-card{
+
+
+background:linear-gradient(
+135deg,
+#4b0015,
+#220006
+);
+
+
+border:1px solid #b8860b;
+
+
+border-radius:25px;
+
+
+padding:30px;
+
+
+height:100%;
+
+
+text-align:center;
+
+
+color:white;
+
+
+}
+
+
+
+.quote-card h4{
+
+
+color:#ffd700;
+
+
+}
+
+
+
+.quote-card p{
+
+
+line-height:2;
+
+
+}
+
+
+
+
+
+.festival-card{
+
+
+background:linear-gradient(
+135deg,
+#8b0000,
+#35000d
+);
+
+
+border:1px solid #ffd700;
+
+
+border-radius:25px;
+
+
+padding:30px;
+
+
+text-align:center;
+
+
+height:100%;
+
+
+color:white;
+
+
+}
+
+
+
+.festival-card h4{
+
+
+color:#ffd700;
+
+
+}
+
+
+
+.festival-card h2{
+
+
+font-size:55px;
+
+
+color:#ffd700;
+
+
+}
+.chart-card{
+
+min-height:420px;
+
+display:flex;
+
+flex-direction:column;
+
+justify-content:center;
+
+}
+
+
+.chart-card canvas{
+
+max-height:260px !important;
+
+}
+.logout-link{
+
+margin-top:20px;
+
+border:1px solid #d4af37;
+
+color:#ffd700 !important;
+
+}
+
+
+.logout-link:hover{
+
+background:#8b0000;
+
+color:white !important;
+
+}

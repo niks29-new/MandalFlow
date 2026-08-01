@@ -1,74 +1,171 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Member</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
+{% block title %}
 
-<body class="bg-light">
+Add Member | KN STREET CHA RAJA
 
-{% include "navbar.html" %}
-<div class="container mt-4">
+{% endblock %}
 
-    <h2>Add Member</h2>
 
-    <form action="/save-member" method="POST">
 
-        <div class="mb-3">
-            <label class="form-label">Name</label>
-            <input
-                type="text"
-                class="form-control"
-                name="name"
-                required>
-        </div>
+{% block content %}
 
-        <div class="mb-3">
-            <label class="form-label">Mobile</label>
-            <input
-                type="text"
-                class="form-control"
-                name="mobile"
-                required>
-        </div>
 
-        <div class="mb-3">
-            <label class="form-label">House No</label>
-            <input
-                type="text"
-                class="form-control"
-                name="house_no">
-        </div>
+<div class="container-fluid py-4">
 
-        <div class="mb-3">
-            <label class="form-label">Area</label>
-            <input
-                type="text"
-                class="form-control"
-                name="area">
-        </div>
 
-        <div class="mb-3">
-            <label class="form-label">Expected Amount</label>
-            <input
-                type="number"
-                class="form-control"
-                name="expected_amount"
-                value="500">
-        </div>
+<div class="card shadow">
 
-        <button type="submit" class="btn btn-success w-100">
-            Save Member
-        </button>
 
-    </form>
+<div class="card-header">
+
+<h3>
+👤 Add New Member
+</h3>
 
 </div>
 
-</body>
 
-</html>
+
+<div class="card-body">
+
+
+
+<form action="/save-member" method="POST">
+
+
+
+<div class="mb-3">
+
+<label class="form-label">
+
+Name
+
+</label>
+
+
+<input
+type="text"
+class="form-control"
+name="name"
+placeholder="Enter Member Name"
+required>
+
+</div>
+
+
+
+
+
+<div class="mb-3">
+
+<label class="form-label">
+
+Mobile
+
+</label>
+
+
+<input
+type="text"
+class="form-control"
+name="mobile"
+placeholder="Enter Mobile Number"
+required>
+
+</div>
+
+
+
+
+
+<div class="mb-3">
+
+<label class="form-label">
+
+House No
+
+</label>
+
+
+<input
+type="text"
+class="form-control"
+name="house_no"
+placeholder="House Number">
+
+</div>
+
+
+
+
+
+<div class="mb-3">
+
+<label class="form-label">
+
+Area
+
+</label>
+
+
+<input
+type="text"
+class="form-control"
+name="area"
+placeholder="Area">
+
+</div>
+
+
+
+
+
+<div class="mb-3">
+
+<label class="form-label">
+
+Expected Amount
+
+</label>
+
+
+<input
+type="number"
+class="form-control"
+name="expected_amount"
+value="500">
+
+</div>
+
+
+
+
+
+<button 
+type="submit"
+class="btn btn-success w-100">
+
+<i class="fa fa-save"></i>
+
+Save Member
+
+</button>
+
+
+
+</form>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+{% endblock %}

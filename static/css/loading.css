@@ -1,0 +1,482 @@
+/* ==========================================
+   MANDALFLOW PREMIUM LOADING SCREEN
+========================================== */
+
+*{
+
+margin:0;
+padding:0;
+box-sizing:border-box;
+
+}
+
+body{
+
+font-family:'Poppins',sans-serif;
+
+height:100vh;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+overflow:hidden;
+
+background:linear-gradient(
+135deg,
+#ff7b00,
+#ff9800,
+#ffd54f
+);
+
+}
+
+/* Background Animation */
+
+body::before{
+
+content:"";
+
+position:absolute;
+
+width:200%;
+
+height:200%;
+
+background:
+radial-gradient(circle,rgba(255,255,255,.15) 2px,transparent 2px);
+
+background-size:60px 60px;
+
+animation:moveBackground 25s linear infinite;
+
+opacity:.5;
+
+}
+
+@keyframes moveBackground{
+
+0%{
+
+transform:translate(0,0);
+
+}
+
+100%{
+
+transform:translate(-300px,-300px);
+
+}
+
+}
+
+/* Container */
+
+.loading-container{
+
+position:relative;
+
+z-index:2;
+
+width:420px;
+
+max-width:90%;
+
+padding:45px;
+
+border-radius:30px;
+
+background:rgba(255,255,255,.18);
+
+backdrop-filter:blur(18px);
+
+text-align:center;
+
+box-shadow:0 20px 60px rgba(0,0,0,.25);
+
+animation:fadeUp .8s ease;
+
+}
+
+@keyframes fadeUp{
+
+from{
+
+opacity:0;
+
+transform:translateY(40px);
+
+}
+
+to{
+
+opacity:1;
+
+transform:translateY(0);
+
+}
+
+}
+/* ==========================================
+   LOGO
+========================================== */
+
+.logo{
+
+width:110px;
+
+height:110px;
+
+margin:auto;
+
+margin-bottom:20px;
+
+border-radius:50%;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+font-size:60px;
+
+background:rgba(255,255,255,.18);
+
+backdrop-filter:blur(15px);
+
+box-shadow:
+0 0 20px rgba(255,255,255,.5),
+0 0 60px rgba(255,193,7,.4);
+
+animation:logoPulse 2s infinite;
+
+}
+
+@keyframes logoPulse{
+
+0%{
+
+transform:scale(1);
+
+}
+
+50%{
+
+transform:scale(1.08);
+
+}
+
+100%{
+
+transform:scale(1);
+
+}
+
+/* ==========================================
+   TITLE
+========================================== */
+
+.loading-container h1{
+
+color:white;
+
+font-size:38px;
+
+font-weight:700;
+
+letter-spacing:2px;
+
+margin-bottom:8px;
+
+}
+
+.loading-container h3{
+
+color:#fffbe8;
+
+font-size:20px;
+
+font-weight:500;
+
+margin-bottom:12px;
+
+}
+
+.loading-container p{
+
+color:white;
+
+font-size:17px;
+
+font-weight:500;
+
+margin-bottom:30px;
+
+opacity:.95;
+
+}
+
+/* ==========================================
+   PROGRESS BAR
+========================================== */
+
+.progress-box{
+
+width:100%;
+
+height:12px;
+
+background:rgba(255,255,255,.25);
+
+border-radius:30px;
+
+overflow:hidden;
+
+margin-top:20px;
+
+margin-bottom:20px;
+
+}
+
+.progress-bar{
+
+height:100%;
+
+width:0%;
+
+border-radius:30px;
+
+background:linear-gradient(
+90deg,
+#ffffff,
+#ffe082,
+#ffffff
+);
+
+animation:loadingBar 2.5s linear forwards;
+
+}
+
+@keyframes loadingBar{
+
+0%{
+
+width:0;
+
+}
+
+100%{
+
+width:100%;
+
+}
+/* ==========================================
+   LOADING TEXT
+========================================== */
+
+.loading-text{
+
+margin-top:25px;
+
+font-size:18px;
+
+font-weight:600;
+
+color:white;
+
+letter-spacing:1px;
+
+animation:blink 1.5s infinite;
+
+}
+
+@keyframes blink{
+
+0%{
+
+opacity:1;
+
+}
+
+50%{
+
+opacity:.5;
+
+}
+
+100%{
+
+opacity:1;
+
+}
+
+}
+
+/* ==========================================
+   FOOTER
+========================================== */
+
+.footer{
+
+margin-top:30px;
+
+font-size:18px;
+
+font-weight:600;
+
+color:#fffbe6;
+
+letter-spacing:1px;
+
+animation:fadeIn 2s ease;
+
+}
+
+@keyframes fadeIn{
+
+from{
+
+opacity:0;
+
+}
+
+to{
+
+opacity:1;
+
+}
+
+}
+
+/* ==========================================
+   FLOATING LIGHTS
+========================================== */
+
+.loading-container::before{
+
+content:"";
+
+position:absolute;
+
+top:-60px;
+
+left:-60px;
+
+width:120px;
+
+height:120px;
+
+background:rgba(255,255,255,.15);
+
+border-radius:50%;
+
+filter:blur(15px);
+
+animation:floatLight 5s infinite ease-in-out;
+
+}
+
+.loading-container::after{
+
+content:"";
+
+position:absolute;
+
+bottom:-70px;
+
+right:-70px;
+
+width:140px;
+
+height:140px;
+
+background:rgba(255,215,64,.20);
+
+border-radius:50%;
+
+filter:blur(20px);
+
+animation:floatLight 6s infinite ease-in-out;
+
+}
+
+@keyframes floatLight{
+
+0%{
+
+transform:translateY(0);
+
+}
+
+50%{
+
+transform:translateY(-20px);
+
+}
+
+100%{
+
+transform:translateY(0);
+
+}
+
+}
+
+/* ==========================================
+   MOBILE
+========================================== */
+
+@media(max-width:768px){
+
+.loading-container{
+
+padding:30px 20px;
+
+border-radius:22px;
+
+}
+
+.logo{
+
+width:90px;
+
+height:90px;
+
+font-size:48px;
+
+}
+
+.loading-container h1{
+
+font-size:30px;
+
+}
+
+.loading-container h3{
+
+font-size:18px;
+
+}
+
+.loading-container p{
+
+font-size:15px;
+
+}
+
+.loading-text{
+
+font-size:16px;
+
+}
+
+.footer{
+
+font-size:15px;
+
+}
+
+} 

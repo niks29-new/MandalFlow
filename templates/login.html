@@ -3,113 +3,331 @@
 
 <head>
 
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>MandalFlow Login</title>
+<title>Login | MandalFlow</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+<link rel="stylesheet" href="/static/css/login.css">
 
 </head>
 
-<body class="bg-light">
+<body>
+
+<div class="background">
+
+<div class="overlay"></div>
+
+<div class="floating floating1"></div>
+<div class="floating floating2"></div>
+<div class="floating floating3"></div>
+
+</div>
 
 <div class="container">
 
-    <div class="row justify-content-center align-items-center vh-100">
+<div class="row justify-content-center align-items-center min-vh-100">
 
-        <div class="col-lg-4 col-md-6 col-sm-10">
+<div class="col-lg-5 col-md-7 col-sm-10">
 
-            <div class="card shadow-lg border-0 rounded-4">
+<div class="login-card">
 
-                <div class="card-body p-5">
+<div class="text-center">
 
-                    <div class="text-center mb-4">
+<div class="ganesha-login-wrapper">
 
-                        <h1>🙏</h1>
 
-                        <h2 class="fw-bold">MandalFlow</h2>
+<img src="/static/images/ganesha.png"
+class="ganesha-login"
+id="ganeshaEye">
 
-                        <p class="text-muted">
-                            Ganesh Chanda Management
-                        </p>
 
-                    </div>
+<div class="divine-glow"></div>
 
-                    {% if error %}
 
-                    <div class="alert alert-danger">
+</div>
 
-                        {{ error }}
+<h1 class="app-title">
 
-                    </div>
+MandalFlow
 
-                    {% endif %}
+</h1>
 
-                    <form method="post" action="/login">
+<h5 class="committee-name">
 
-                        <div class="mb-3">
+KN STREET CHA RAJA
 
-                            <label class="form-label">
+</h5>
 
-                                Username
+<p class="devotion">
 
-                            </label>
+12 Years of Devotion
 
-                            <input
-                                type="text"
-                                name="username"
-                                class="form-control form-control-lg"
-                                required>
+</p>
 
-                        </div>
+<div class="divider"></div>
 
-                        <div class="mb-4">
+</div>
+<!-- ================= LOGIN FORM ================= -->
 
-                            <label class="form-label">
+<form action="/login" method="POST" onsubmit="return showLoading()">
 
-                                Password
+    <div class="mb-4">
 
-                            </label>
+        <label class="form-label fw-semibold">
 
-                            <input
-                                type="password"
-                                name="password"
-                                class="form-control form-control-lg"
-                                required>
+            Username
 
-                        </div>
+        </label>
 
-                        <button class="btn btn-primary btn-lg w-100">
+        <div class="input-group custom-input">
 
-                            Login
+            <span class="input-group-text">
 
-                        </button>
+                <i class="fa-solid fa-user"></i>
 
-                    </form>
+            </span>
 
-                    <hr>
-
-                    <div class="text-center text-muted">
-
-                        <small>
-
-                            © 2026 MandalFlow
-
-                        </small>
-
-                    </div>
-
-                </div>
-
-            </div>
+            <input
+                type="text"
+                class="form-control"
+                name="username"
+                placeholder="Enter Username"
+                required>
 
         </div>
 
     </div>
 
+    <div class="mb-4">
+
+        <label class="form-label fw-semibold">
+
+            Password
+
+        </label>
+
+        <div class="input-group custom-input">
+
+            <span class="input-group-text">
+
+                <i class="fa-solid fa-lock"></i>
+
+            </span>
+
+            <input
+                type="password"
+                class="form-control"
+                id="password"
+                name="password"
+                placeholder="Enter Password"
+                required>
+
+            <button
+                class="btn btn-light"
+                type="button"
+                id="togglePassword">
+
+                <i class="fa-solid fa-eye"></i>
+
+            </button>
+
+        </div>
+
+    </div>
+
+    {% if error %}
+
+    <div class="alert alert-danger text-center">
+
+        <i class="fa-solid fa-circle-exclamation"></i>
+
+        {{ error }}
+
+    </div>
+
+    {% endif %}
+
+    <button
+        type="submit"
+        class="btn login-btn w-100">
+
+        <i class="fa-solid fa-right-to-bracket"></i>
+
+        Login
+
+    </button>
+
+</form>
+
+<div class="text-center mt-4">
+
+    <small class="footer-text">
+
+        Faith • Unity • Transparency
+
+    </small>
+
+    <br>
+
+    <small class="footer-text">
+
+        🌺 गणपति बाप्पा मोरया 🌺
+
+    </small>
+
 </div>
+<!-- ================= FOOTER ================= -->
+
+<div class="text-center mt-4">
+
+    <div class="divider mb-3"></div>
+
+    <p class="copyright">
+
+        © 2026 MandalFlow
+
+    </p>
+
+    <p class="powered">
+
+        Built with ❤️ for
+
+        <strong>
+
+            KN STREET CHA RAJA
+
+        </strong>
+
+    </p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+const togglePassword = document.getElementById("togglePassword");
+
+const password = document.getElementById("password");
+
+togglePassword.addEventListener("click", function(){
+
+if(password.type === "password"){
+
+password.type = "text";
+
+this.innerHTML='<i class="fa-solid fa-eye-slash"></i>';
+
+}else{
+
+password.type = "password";
+
+this.innerHTML='<i class="fa-solid fa-eye"></i>';
+
+}
+
+});
+
+document.body.classList.add("loaded");
+// GANESH EYE GAZING EFFECT
+
+const ganesh = document.getElementById("ganeshaEye");
+
+
+document.addEventListener("mousemove",(e)=>{
+
+
+let x = (e.clientX / window.innerWidth - 0.5) * 15;
+
+let y = (e.clientY / window.innerHeight - 0.5) * 15;
+
+
+if(ganesh){
+
+ganesh.style.transform =
+`translate(${x}px, ${y}px)`;
+
+}
+
+});
+
+
+
+// LOGIN LOADING ANIMATION
+
+function showLoading(){
+
+
+document.getElementById("loading-screen").style.display="flex";
+
+
+setTimeout(function(){
+
+
+document.querySelector("form").submit();
+
+
+},3000);
+
+
+
+return false;
+
+
+}
+
+
+</script>
+
+
+
+<div id="loading-screen">
+
+
+<div class="loading-content">
+
+
+<img src="/static/images/ganesha.png"
+class="loading-ganesha">
+
+
+<h2>
+🙏 गणपति बाप्पा मोरया 🙏
+</h2>
+
+
+<p>
+Entering KN STREET CHA RAJA Dashboard
+</p>
+
+
+<div class="loader"></div>
+
+
+</div>
+
+
+</div>
+
+
+</body>
+
+</html>
 
 </body>
 

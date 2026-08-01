@@ -1,0 +1,178 @@
+{% extends "base.html" %}
+
+{% block title %}
+Analytics | KN STREET CHA RAJA
+{% endblock %}
+
+{% block content %}
+
+<div class="container py-4">
+
+<h2 class="mb-4">
+📊 Analytics
+</h2>
+
+
+<div class="row g-3">
+
+
+<div class="col-md-4">
+<div class="card shadow rounded-4">
+<div class="card-body">
+
+<h6>Total Collection</h6>
+
+<h2>
+₹{{ total_collection }}
+</h2>
+
+</div>
+</div>
+</div>
+
+
+<div class="col-md-4">
+<div class="card shadow rounded-4">
+<div class="card-body">
+
+<h6>Total Expense</h6>
+
+<h2>
+₹{{ total_expense }}
+</h2>
+
+</div>
+</div>
+</div>
+
+
+<div class="col-md-4">
+<div class="card shadow rounded-4">
+<div class="card-body">
+
+<h6>Balance</h6>
+
+<h2>
+₹{{ balance }}
+</h2>
+
+</div>
+</div>
+</div>
+
+
+</div>
+
+
+
+<div class="row mt-4 g-3">
+
+
+<div class="col-md-6">
+
+<div class="card shadow rounded-4">
+
+<div class="card-body">
+
+<h4>
+Member Status
+</h4>
+
+
+<table class="table">
+
+<tr>
+<td>Paid</td>
+<td>{{ paid_members }}</td>
+</tr>
+
+<tr>
+<td>Partial</td>
+<td>{{ partial_members }}</td>
+</tr>
+
+<tr>
+<td>Pending</td>
+<td>{{ pending_members }}</td>
+</tr>
+
+</table>
+
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<div class="col-md-6">
+
+<div class="card shadow rounded-4">
+
+<div class="card-body">
+
+<h4>
+Collection Overview
+</h4>
+
+
+<canvas id="collectionChart"></canvas>
+
+
+</div>
+
+</div>
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<script>
+
+const ctx = document.getElementById('collectionChart');
+
+
+new Chart(ctx, {
+
+type:'doughnut',
+
+data:{
+
+labels:[
+'Collection',
+'Expense',
+'Balance'
+],
+
+datasets:[{
+
+data:[
+
+{{ total_collection }},
+
+{{ total_expense }},
+
+{{ balance }}
+
+]
+
+}]
+
+}
+
+});
+
+</script>
+
+
+{% endblock %}

@@ -1,246 +1,260 @@
 {% extends "base.html" %}
 
+
 {% block title %}
-Expenses
+
+Expenses | KN STREET CHA RAJA
+
 {% endblock %}
+
+
 
 {% block content %}
 
-<div class="hero">
 
-    <div style="font-size:60px;">
+<div class="container-fluid py-4">
 
-        💸
 
-    </div>
 
-    <h2 class="mt-3">
+<!-- HEADER -->
 
-        Expense Management
+<div class="mb-4">
 
-    </h2>
 
-    <p>
+<h2 class="fw-bold">
 
-        Track every rupee spent by the committee
+💸 Expense Management
 
-    </p>
+</h2>
+
+
+<p class="text-muted">
+
+Track Ganesh festival expenses with complete transparency
+
+</p>
+
+
+</div>
+
+
+
+
+
+<!-- SUMMARY CARDS -->
+
+
+<div class="row g-4 mb-4">
+
+
+<div class="col-md-3">
+
+<div class="premium-card expense">
+
+
+<i class="fa fa-wallet"></i>
+
+
+<h6>
+
+Total Expense
+
+</h6>
+
+
+<h2>
+
+₹{{ total_expense }}
+
+</h2>
+
 
 </div>
 
-<!-- SUMMARY -->
+</div>
 
-<div class="row mb-4">
 
-    <div class="col-md-4">
 
-        <div class="stat-card bg-expense">
 
-            <div class="stat-icon">
 
-                💸
+<div class="col-md-3">
 
-            </div>
 
-            <small>
+<div class="premium-card collection">
 
-                Total Expenses
 
-            </small>
+<i class="fa fa-money-bill"></i>
 
-            <div class="stat-number">
 
-                ₹{{ total_expenses }}
+<h6>
 
-            </div>
+Cash Expense
 
-        </div>
+</h6>
 
-    </div>
+
+<h2>
+
+₹{{ cash_expense }}
+
+</h2>
+
 
 </div>
+
+
+</div>
+
+
+
+
+
+
+<div class="col-md-3">
+
+
+<div class="premium-card balance">
+
+
+<i class="fa fa-mobile-screen"></i>
+
+
+<h6>
+
+UPI Expense
+
+</h6>
+
+
+<h2>
+
+₹{{ upi_expense }}
+
+</h2>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+<div class="col-md-3">
+
+
+<div class="premium-card members">
+
+
+<i class="fa fa-building-columns"></i>
+
+
+<h6>
+
+Bank Expense
+
+</h6>
+
+
+<h2>
+
+₹{{ bank_expense }}
+
+</h2>
+
+
+</div>
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+<div class="row g-4">
+
+
+
+
 
 <!-- ADD EXPENSE -->
 
-<div class="card-box">
 
-<h4 class="section-title">
+<div class="col-lg-4">
+
+
+<div class="card shadow rounded-4">
+
+
+<div class="card-body">
+
+
+<h4 class="mb-4">
 
 ➕ Add Expense
 
 </h4>
 
-<form action="/save-expense" method="POST">
 
-<div class="row">
 
-<div class="col-md-6 mb-4">
 
-<label class="form-label fw-bold">
+<form action="/save-expense" method="post">
+
+
+
+
+
+<div class="mb-3">
+
+
+<label class="form-label">
 
 Expense Type
 
 </label>
 
-<select
-class="form-select"
+
+<input 
+class="form-control"
 name="expense_type"
+placeholder="Example: Decoration"
 required>
 
+
+</div>
+
+
+
+
+
+
+
+<div class="mb-3">
+
+
+<label class="form-label">
+
+Category
+
+</label>
+
+
+<select class="form-select" name="category">
+
+
 <option>Decoration</option>
-
-<option>Flowers</option>
-
-<option>Food</option>
 
 <option>DJ</option>
-
-<option>Electricity</option>
-
-<option>Sound</option>
-
-<option>Prasad</option>
-
-<option>Transport</option>
-
-<option>Cleaning</option>
-
-<option>Miscellaneous</option>
-
-</select>
-
-</div>
-
-<div class="col-md-6 mb-4">
-
-<label class="form-label fw-bold">
-
-Amount (₹)
-
-</label>
-
-<input
-
-type="number"
-
-class="form-control form-control-lg"
-
-name="amount"
-
-required>
-
-</div>
-<!-- ================= Payment Mode ================= -->
-
-<div class="col-md-6 mb-4">
-
-<label class="form-label fw-bold">
-
-Payment Mode
-
-</label>
-
-<div class="row g-3">
-
-<div class="col-6">
-
-<input
-type="radio"
-class="btn-check"
-name="payment_mode"
-id="cash"
-value="Cash"
-checked>
-
-<label
-class="btn btn-outline-success w-100 p-3"
-for="cash">
-
-💵
-
-<br>
-
-Cash
-
-</label>
-
-</div>
-
-<div class="col-6">
-
-<input
-type="radio"
-class="btn-check"
-name="payment_mode"
-id="upi"
-value="UPI">
-
-<label
-class="btn btn-outline-primary w-100 p-3"
-for="upi">
-
-📱
-
-<br>
-
-UPI
-
-</label>
-
-</div>
-
-</div>
-
-</div>
-
-<!-- ================= Paid By ================= -->
-
-<div class="col-md-6 mb-4">
-
-<label class="form-label fw-bold">
-
-👤 Paid By
-
-</label>
-
-<select
-class="form-select"
-name="paid_by"
-required>
-
-<option value="">Select Committee Member</option>
-
-<option>Balaji</option>
-
-<option>Rahul</option>
-
-<option>Vinay</option>
-
-<option>Suresh</option>
-
-<option>Akash</option>
-
-<option>Other</option>
-
-</select>
-
-</div>
-
-<!-- ================= Category ================= -->
-
-<div class="col-md-6 mb-4">
-
-<label class="form-label fw-bold">
-
-🏷 Category
-
-</label>
-
-<select
-class="form-select"
-name="category">
-
-<option>Decoration</option>
 
 <option>Food</option>
 
@@ -248,287 +262,314 @@ name="category">
 
 <option>Electrical</option>
 
-<option>Sound</option>
-
 <option>Transport</option>
 
-<option>Cleaning</option>
+<option>Others</option>
 
-<option>Generator</option>
-
-<option>Miscellaneous</option>
 
 </select>
 
-</div>
-
-<!-- ================= Transaction ID ================= -->
-
-<div
-class="col-md-6 mb-4"
-id="transactionBox"
-style="display:none;">
-
-<label class="form-label fw-bold">
-
-UPI Transaction ID
-
-</label>
-
-<input
-
-type="text"
-
-class="form-control"
-
-name="transaction_id"
-
-placeholder="Optional">
 
 </div>
 
-<!-- ================= Expense Date ================= -->
 
-<div class="col-md-6 mb-4">
 
-<label class="form-label fw-bold">
 
-📅 Expense Date
+
+
+
+<div class="mb-3">
+
+
+<label class="form-label">
+
+Amount
 
 </label>
 
-<input
 
-type="date"
-
+<input 
+type="number"
 class="form-control"
-
-name="expense_date"
-
+name="amount"
+placeholder="Enter Amount"
 required>
 
+
 </div>
 
-<!-- ================= Remarks ================= -->
 
-<div class="col-md-6 mb-4">
 
-<label class="form-label fw-bold">
 
-📝 Remarks
+
+
+
+<div class="mb-3">
+
+
+<label class="form-label">
+
+Payment Mode
 
 </label>
 
-<input
 
-type="text"
+<select class="form-select" name="payment_mode">
 
+
+<option>Cash</option>
+
+<option>UPI</option>
+
+<option>Bank</option>
+
+
+</select>
+
+
+</div>
+
+
+
+
+
+
+
+<div class="mb-3">
+
+
+<label class="form-label">
+
+Paid By
+
+</label>
+
+
+<input 
 class="form-control"
+name="paid_by"
+placeholder="Person Name">
 
+
+</div>
+
+
+
+
+
+
+
+<div class="mb-3">
+
+
+<label class="form-label">
+
+Expense Date
+
+</label>
+
+
+<input 
+type="date"
+class="form-control"
+name="expense_date"
+required>
+
+
+</div>
+
+
+
+
+
+
+
+<div class="mb-3">
+
+
+<label class="form-label">
+
+Transaction ID
+
+</label>
+
+
+<input 
+class="form-control"
+name="transaction_id">
+
+
+</div>
+
+
+
+
+
+
+
+<div class="mb-3">
+
+
+<label class="form-label">
+
+Remarks
+
+</label>
+
+
+<textarea 
+class="form-control"
 name="remarks"
+rows="3"></textarea>
 
-placeholder="Optional">
-
-</div>
-<!-- ================= Expense Summary ================= -->
-
-<div class="col-12">
-
-<div class="card bg-light border-0 mb-4">
-
-<div class="card-body">
-
-<h5 class="mb-3">
-
-📋 Expense Summary
-
-</h5>
-
-<div class="row">
-
-<div class="col-md-3 col-6 mb-3">
-
-<strong>Total Expense</strong>
-
-<h4 class="text-danger">
-
-₹{{ total_expenses }}
-
-</h4>
 
 </div>
 
-<div class="col-md-3 col-6 mb-3">
 
-<strong>Payment Mode</strong>
 
-<p class="mb-0">
 
-Cash / UPI
 
-</p>
 
-</div>
 
-<div class="col-md-3 col-6 mb-3">
+<button class="btn btn-danger w-100">
 
-<strong>Categories</strong>
 
-<p class="mb-0">
+<i class="fa fa-save"></i>
 
-Decoration, Food, DJ...
-
-</p>
-
-</div>
-
-<div class="col-md-3 col-6 mb-3">
-
-<strong>Committee</strong>
-
-<p class="mb-0">
-
-Expense Tracking
-
-</p>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-<!-- ================= Buttons ================= -->
-
-<div class="d-grid gap-3 mt-3">
-
-<button
-
-type="submit"
-
-class="btn btn-danger btn-lg">
-
-<i class="fa-solid fa-floppy-disk"></i>
 
 Save Expense
 
+
 </button>
 
-<a
 
-href="/dashboard"
-
-class="btn btn-outline-secondary btn-lg">
-
-<i class="fa-solid fa-arrow-left"></i>
-
-Back to Dashboard
-
-</a>
-
-</div>
 
 </form>
 
+
 </div>
 
-<!-- ================= Expense History ================= -->
 
-<div class="card-box mt-4">
+</div>
 
-<h4 class="section-title">
 
-📋 Expense History
+</div>
+
+
+
+
+
+
+
+
+
+<!-- EXPENSE HISTORY -->
+
+
+<div class="col-lg-8">
+
+
+<div class="card shadow rounded-4">
+
+
+<div class="card-body">
+
+
+<h4 class="mb-4">
+
+📜 Expense History
 
 </h4>
 
+
+
+
+
 <div class="table-responsive">
 
-<table class="table table-hover align-middle">
 
-<thead class="table-dark">
+<table class="table table-hover">
+
+
+<thead>
+
 
 <tr>
+
 
 <th>ID</th>
 
 <th>Type</th>
 
+<th>Category</th>
+
 <th>Amount</th>
 
 <th>Mode</th>
 
-<th>Paid By</th>
-
 <th>Date</th>
-
-<th>Remarks</th>
 
 <th>Action</th>
 
+
 </tr>
+
 
 </thead>
 
+
+
+
+
 <tbody>
 
-{% if expenses %}
 
 {% for expense in expenses %}
 
+
+
 <tr>
 
-<td>{{ expense.id }}</td>
 
 <td>
 
-<span class="fw-bold">
-
-{{ expense.expense_type }}
-
-</span>
+{{ expense.id }}
 
 </td>
 
-<td class="text-danger fw-bold">
+
+
+<td>
+
+{{ expense.expense_type }}
+
+</td>
+
+
+
+<td>
+
+{{ expense.category }}
+
+</td>
+
+
+
+<td>
 
 ₹{{ expense.amount }}
 
 </td>
 
-<td>
 
-{% if expense.payment_mode == "Cash" %}
-
-<span class="badge bg-success">
-
-💵 Cash
-
-</span>
-
-{% else %}
-
-<span class="badge bg-primary">
-
-📱 UPI
-
-</span>
-
-{% endif %}
-
-</td>
 
 <td>
 
-{{ expense.paid_by }}
+{{ expense.payment_mode }}
 
 </td>
+
+
 
 <td>
 
@@ -536,167 +577,86 @@ Back to Dashboard
 
 </td>
 
-<td>
 
-{{ expense.remarks }}
-
-</td>
 
 <td>
 
-<a
+
+
+<a 
 
 href="/delete-expense/{{ expense.id }}"
 
-class="btn btn-sm btn-outline-danger"
+class="btn btn-sm btn-danger"
 
-onclick="return confirm('Delete this expense?')">
+onclick="return confirm('Delete expense?')">
 
-<i class="fa-solid fa-trash"></i>
+
+<i class="fa fa-trash"></i>
+
 
 </a>
 
+
+
 </td>
+
+
 
 </tr>
 
-{% endfor %}
+
 
 {% else %}
 
+
+
 <tr>
 
-<td colspan="8" class="text-center py-5">
 
-<h5>
+<td colspan="7" class="text-center text-muted">
 
-💸 No Expenses Added Yet
 
-</h5>
+No expenses found
 
-<p class="text-muted">
-
-Add your first expense above.
-
-</p>
 
 </td>
 
+
 </tr>
 
-{% endif %}
+
+
+{% endfor %}
+
+
 
 </tbody>
 
+
 </table>
 
-</div>
 
 </div>
-{% endblock %}
-
-{% block scripts %}
-
-<script>
-
-// =====================================
-// Auto Fill Today's Date
-// =====================================
-
-document.addEventListener("DOMContentLoaded",function(){
-
-    const today = new Date().toISOString().split("T")[0];
-
-    const expenseDate = document.querySelector(
-        'input[name="expense_date"]'
-    );
-
-    if(expenseDate && expenseDate.value===""){
-
-        expenseDate.value = today;
-
-    }
-
-});
 
 
-// =====================================
-// Show Transaction ID for UPI
-// =====================================
 
-const cashRadio = document.getElementById("cash");
-
-const upiRadio = document.getElementById("upi");
-
-const transactionBox = document.getElementById("transactionBox");
-
-function toggleTransaction(){
-
-    if(upiRadio.checked){
-
-        transactionBox.style.display="block";
-
-    }else{
-
-        transactionBox.style.display="none";
-
-    }
-
-}
-
-cashRadio.addEventListener("change",toggleTransaction);
-
-upiRadio.addEventListener("change",toggleTransaction);
-
-toggleTransaction();
+</div>
 
 
-// =====================================
-// Form Validation
-// =====================================
+</div>
 
-document.querySelector("form").addEventListener("submit",function(e){
 
-    const amount = document.querySelector(
-        'input[name="amount"]'
-    ).value;
+</div>
 
-    if(amount==="" || Number(amount)<=0){
 
-        alert("Please enter a valid expense amount.");
 
-        e.preventDefault();
 
-        return;
+</div>
 
-    }
 
-    const expenseType = document.querySelector(
-        'select[name="expense_type"]'
-    ).value;
+</div>
 
-    const mode = upiRadio.checked ? "UPI" : "Cash";
 
-    const confirmSave = confirm(
-
-`Save this expense?
-
-Expense : ${expenseType}
-
-Amount : ₹${amount}
-
-Payment Mode : ${mode}`
-
-    );
-
-    if(!confirmSave){
-
-        e.preventDefault();
-
-    }
-
-});
-
-</script>
 
 {% endblock %}

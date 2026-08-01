@@ -1,0 +1,25 @@
+/* PAYMENT PAGE */
+
+.table-responsive{
+    overflow-x:auto;
+}
+
+
+.table{
+    min-width:900px;
+}
+
+
+.card{
+    height:auto;
+}
+
+
+@media(max-width:992px){
+
+    .col-lg-4,
+    .col-lg-8{
+        width:100%;
+    }
+
+}
