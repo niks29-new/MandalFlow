@@ -1,0 +1,37 @@
+*{
+    box-sizing:border-box;
+}
+
+
+@media(max-width:768px){
+
+body{
+    overflow-x:hidden;
+}
+
+
+.sidebar{
+    position:relative !important;
+    width:100% !important;
+}
+
+
+.page-wrapper{
+    margin-left:0 !important;
+    width:100% !important;
+}
+
+
+.row{
+    display:block !important;
+}
+
+
+.col-lg-4,
+.col-lg-8,
+.col-md-3{
+    width:100% !important;
+    max-width:100% !important;
+}
+
+}
