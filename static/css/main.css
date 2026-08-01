@@ -1138,157 +1138,86 @@ min-height:100vh;
 }
 
 
-
-/* MOBILE */
-
+/* ===============================
+   MOBILE RESPONSIVE
+================================ */
 
 @media(max-width:768px){
 
+
 .sidebar{
 
-width:80px;
+    position:relative !important;
 
-padding:15px 10px;
+    width:100% !important;
+
+    height:auto !important;
+
+    padding:20px 15px !important;
+
+    overflow:visible !important;
+
+}
+
+
+.logo-box{
+
+    justify-content:center;
 
 }
 
 
-.logo-box h3,
-.logo-box p,
-.sidebar a{
+.logo-box h3{
 
-font-size:0;
+    font-size:22px !important;
 
 }
+
+
+.logo-box p{
+
+    font-size:12px !important;
+
+}
+
+
+
+.menu a,
+.sidebar > a{
+
+    font-size:15px !important;
+
+    display:flex !important;
+
+}
+
+
+
+.menu a i,
+.sidebar > a i{
+
+    font-size:18px !important;
+
+}
+
 
 
 .page-wrapper{
 
-margin-left:80px;
+    margin-left:0 !important;
+
+    padding:15px !important;
+
+    width:100% !important;
 
 }
 
+
+.container-fluid{
+
+    padding:0 !important;
+
 }
-/* =====================================
-   MOBILE RESPONSIVE FIX
-===================================== */
-
-@media(max-width:768px){
-
-    body{
-        overflow-x:hidden;
-    }
-
-
-    /* Sidebar */
-
-    .sidebar{
-
-        position:relative !important;
-
-        width:100% !important;
-
-        height:auto !important;
-
-        min-height:auto !important;
-
-    }
-
-
-    .logo-box{
-
-        justify-content:center;
-
-        text-align:center;
-
-    }
-
-
-    .menu a{
-
-        padding:12px 20px;
-
-    }
-
-
-
-    /* Main Content */
-
-    .page-wrapper{
-
-        margin-left:0 !important;
-
-        width:100% !important;
-
-        padding:15px !important;
-
-    }
-
-
-
-    /* Hero Section */
-
-    .hero-section{
-
-        width:100% !important;
-
-        height:auto !important;
-
-        min-height:600px;
-
-        border-radius:20px;
-
-    }
-
-
-    .hero-content{
-
-        position:relative !important;
-
-        top:20px !important;
-
-        left:20px !important;
-
-        width:90%;
-
-    }
-
-
-    .hero-content h1{
-
-        font-size:30px !important;
-
-    }
-
-
-    .hero-ganesha{
-
-        position:absolute !important;
-
-        width:100% !important;
-
-        right:0 !important;
-
-        bottom:0 !important;
-
-    }
-
-
-
-    /* Cards */
-
-    .row{
-
-        margin:0 !important;
-
-    }
-
-
-    .card{
-
-        margin-bottom:15px;
-
-    }
 
 
 }
