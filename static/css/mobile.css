@@ -3,35 +3,139 @@
 }
 
 
-@media(max-width:768px){
-
-body{
+html,body{
+    width:100%;
     overflow-x:hidden;
 }
 
 
-.sidebar{
-    position:relative !important;
-    width:100% !important;
+
+@media(max-width:768px){
+
+
+body{
+    overflow-x:hidden !important;
 }
 
 
-.page-wrapper{
-    margin-left:0 !important;
+
+/* SIDEBAR */
+
+.sidebar{
+
+    position:relative !important;
+
+    left:0 !important;
+
+    top:0 !important;
+
     width:100% !important;
+
+    height:auto !important;
+
+    min-height:auto !important;
+
+    padding:15px !important;
+
+}
+
+
+
+/* LOGO */
+
+.logo-box{
+
+    justify-content:center !important;
+
+}
+
+
+
+/* PAGE */
+
+.page-wrapper{
+
+    margin-left:0 !important;
+
+    padding:10px !important;
+
+    width:100% !important;
+
+    max-width:100% !important;
+
+}
+
+
+
+/* BOOTSTRAP */
+
+.container,
+.container-fluid{
+
+    width:100% !important;
+
+    max-width:100% !important;
+
+    padding-left:10px !important;
+
+    padding-right:10px !important;
+
 }
 
 
 .row{
-    display:block !important;
+
+    display:flex !important;
+
+    flex-direction:column !important;
+
+    width:100% !important;
+
+    margin:0 !important;
+
 }
 
 
+
+.col,
 .col-lg-4,
 .col-lg-8,
-.col-md-3{
+.col-md-3,
+.col-md-4,
+.col-md-6{
+
     width:100% !important;
+
     max-width:100% !important;
+
+    flex:0 0 100% !important;
+
 }
+
+
+
+/* CARDS */
+
+.card,
+.premium-card{
+
+    width:100% !important;
+
+    margin-bottom:15px !important;
+
+}
+
+
+
+/* IMAGES */
+
+img{
+
+    max-width:100% !important;
+
+    height:auto !important;
+
+}
+
 
 }
