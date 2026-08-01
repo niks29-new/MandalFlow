@@ -1169,3 +1169,126 @@ margin-left:80px;
 }
 
 }
+/* =====================================
+   MOBILE RESPONSIVE FIX
+===================================== */
+
+@media(max-width:768px){
+
+    body{
+        overflow-x:hidden;
+    }
+
+
+    /* Sidebar */
+
+    .sidebar{
+
+        position:relative !important;
+
+        width:100% !important;
+
+        height:auto !important;
+
+        min-height:auto !important;
+
+    }
+
+
+    .logo-box{
+
+        justify-content:center;
+
+        text-align:center;
+
+    }
+
+
+    .menu a{
+
+        padding:12px 20px;
+
+    }
+
+
+
+    /* Main Content */
+
+    .page-wrapper{
+
+        margin-left:0 !important;
+
+        width:100% !important;
+
+        padding:15px !important;
+
+    }
+
+
+
+    /* Hero Section */
+
+    .hero-section{
+
+        width:100% !important;
+
+        height:auto !important;
+
+        min-height:600px;
+
+        border-radius:20px;
+
+    }
+
+
+    .hero-content{
+
+        position:relative !important;
+
+        top:20px !important;
+
+        left:20px !important;
+
+        width:90%;
+
+    }
+
+
+    .hero-content h1{
+
+        font-size:30px !important;
+
+    }
+
+
+    .hero-ganesha{
+
+        position:absolute !important;
+
+        width:100% !important;
+
+        right:0 !important;
+
+        bottom:0 !important;
+
+    }
+
+
+
+    /* Cards */
+
+    .row{
+
+        margin:0 !important;
+
+    }
+
+
+    .card{
+
+        margin-bottom:15px;
+
+    }
+
+
+}
